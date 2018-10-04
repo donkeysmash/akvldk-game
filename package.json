@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "debug": "nodemon --watch ./dist_server --inspect=0.0.0.0:9222 --nolazy ./dist_server/index.js",
+    "debug": "nodemon --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/index.js",
     "docker-debug": "docker-compose up",
-    "start:server": "node ./dist_server/index.js",
+    "start:server": "node ./dist/index.js",
     "build:server": "tsc",
     "watch:server": "tsc -w"
   },
