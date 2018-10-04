@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "rootDir": "./server",
-    "outDir": "./dist_server",
+    "outDir": "./dist",
     "sourceMap": true,
     "lib": [
       "es6"

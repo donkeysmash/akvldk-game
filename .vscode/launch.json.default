@@ -10,13 +10,13 @@
       "request": "attach",
       "port": 9222,
       "address": "localhost",
-      "localRoot": "./server",
-      "remoteRoot": "/server",
+      "localRoot": "${workspaceFolder}/server",
+      "remoteRoot": "/app/server",
       "protocol": "inspector",
       "preLaunchTask": "tsc-watch",
       "restart": true,
       "outFiles": [
-        "${workspaceFolder}/dist_server/**/*.js"
+        "${workspaceFolder}/dist/**/*.js"
       ]
     }
   ]

@@ -1,5 +1,4 @@
 dist/
-dist_server/
 
 .vscode/launch.json
 .vscode/tasks.json
