@@ -6,7 +6,7 @@
   "scripts": {
     "debug": "nodemon --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/index.js",
     "docker-debug": "docker-compose up",
-    "start:server": "node ./dist/index.js",
+    "start:server": "node ./dist_server/index.js",
     "build:server": "tsc",
     "watch:server": "tsc -w"
   },

@@ -8,11 +8,4 @@ router.get('/', (req: Request, res: Response) => {
     res.send('Hello, World!');
 });
 
-// router.get('/:name', (req: Request, res: Response) => {
-//     let { name } = req.params;
-
-//     // Greet the given name
-//     res.send(`Hello, ${name}`);
-// });
-
 export const SessionController: Router = router;
