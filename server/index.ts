@@ -1,15 +1,14 @@
-import * as http from 'http';
+import * as express from 'express';
 
-let reqCnt = 1;
+const app: express.Application = express();
+const port: number = Number(process.env.PORT) || 8080;
 
-http.createServer((req, res) => {
+app.listen(port, '0.0.0.0', () => {
+  console.log('apsodjpaofsj');
+});
 
-  const message = `Request Count: ${reqCnt}`;
+app.get(['*'], () => {
+  console.log("hello world");
+})
 
-  res.writeHead(200, { 'Content-Type': 'text/html' });
-  res.end(`<html><head><meta http-equiv="refresh" content="2"></head><body>${message}</body></html>`);
-
-  console.log("handled request: " + reqCnt++);
-}).listen(8080);
-
-console.log('server running on port 8080');
+export default app;
