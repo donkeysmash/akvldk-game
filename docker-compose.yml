@@ -11,7 +11,7 @@ services:
     ports:
       - 3000:3000
       - 9222:9222
-    command: npm run debug
+    command: npm run __debug
     volumes:
       - ./dist_server:/app/dist_server
       - ./dist_client:/app/dist_client

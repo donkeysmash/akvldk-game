@@ -25,15 +25,17 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        include: path.resolve(__dirname),
         loader: 'babel-loader'
+      }, {
+        test: /\.css$/,
+        loader: ['style-loader', 'css-loader']
       }
     ]
   },
   devtool: 'eval-source-map',
   devServer: {
     host: '0.0.0.0',
-    contentBase: path.resolve(__dirname, '../dist_client'),
-    port: 8080
+    port: 4000
   }
 }
