@@ -1,14 +1,14 @@
 {
   "name": "akvldk-game",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "mafia game helper",
   "scripts": {
     "debug": "nodemon --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/index.js",
     "docker-debug": "docker-compose up",
     "start:server": "node ./dist_server/index.js",
     "build:server": "tsc",
-    "watch:server": "tsc -w"
+    "watch:server": "tsc -w",
+    "start:client": "webpack-dev-server --hot"
   },
   "repository": {
     "type": "git",
@@ -16,19 +16,31 @@
   },
   "keywords": [],
   "author": "",
+  "private": true,
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/donkeysmash/akvldk-game/issues"
   },
   "homepage": "https://github.com/donkeysmash/akvldk-game#readme",
   "dependencies": {
-    "express": "^4.16.3"
+    "@babel/polyfill": "^7.0.0",
+    "express": "^4.16.3",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
     "@types/express": "^4.16.0",
     "@types/node": "^10.11.3",
+    "babel-loader": "^8.0.4",
     "nodemon": "^1.18.4",
+    "react-hot-loader": "^4.3.11",
     "ts-lint": "^4.5.1",
-    "typescript": "^3.1.1"
+    "typescript": "^3.1.1",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.9"
   }
 }

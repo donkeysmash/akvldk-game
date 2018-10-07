@@ -2,7 +2,7 @@ import * as express from 'express';
 import { SessionController } from './controllers';
 
 const app: express.Application = express();
-const port: number = Number(process.env.PORT) || 8080;
+const port: number = Number(process.env.PORT) || 3000;
 
 app.listen(port, '0.0.0.0');
 
