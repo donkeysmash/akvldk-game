@@ -7,4 +7,8 @@ const router: Router = Router();
 router.get('/', (req: Request, res: Response) => {
 });
 
-export const SessionController: Router = router;
+router.get('/init', (req: Request, res: Response) => {
+
+});
+
+export const DevController: Router = router;

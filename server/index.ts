@@ -1,13 +1,17 @@
 import * as express from 'express';
-import { SessionController } from './controllers';
+import { SessionController, DevController } from './controllers';
 import * as path from 'path';
 
 const app: express.Application = express();
 const port: number = Number(process.env.PORT) || 3000;
+const isDevelopment = process.env.NODE_ENV === 'development';
 
-app.use(express.static(path.resolve(process.cwd(), 'dist_client')));
 
-
+if (isDevelopment) {
+  app.use('/dev', DevController);
+} else {
+  app.use(express.static(path.resolve(process.cwd(), 'dist_client')));
+}
 
 app.use('/session', SessionController);
 

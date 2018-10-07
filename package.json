@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "mafia game helper",
   "scripts": {
-    "__debug": "nodemon --watch ./dist_server --inspect=0.0.0.0:9222 --nolazy ./dist_server/index.js",
+    "__debug": "NODE_ENV=development nodemon --watch ./dist_server --inspect=0.0.0.0:9222 --nolazy ./dist_server/index.js",
     "debug:server": "docker-compose up --build",
     "start:server": "node ./dist_server/index.js",
     "build:server": "tsc",
@@ -28,6 +28,7 @@
     "@babel/polyfill": "^7.0.0",
     "emotion": "^9.2.12",
     "express": "^4.16.3",
+    "mongoose": "^5.3.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
   },
