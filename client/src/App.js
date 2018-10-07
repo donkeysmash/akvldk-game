@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { css } from 'emotion';
 import { hot } from 'react-hot-loader';
 
 class App extends Component {
