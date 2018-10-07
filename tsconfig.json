@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "rootDir": "./server",
+    "outDir": "./dist_server",
+    "sourceMap": true,
+    "lib": [
+      "es6"
+    ]
+  }
+}

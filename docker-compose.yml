@@ -1,0 +1,19 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:3.6.8-stretch
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME:admin
+      - MONGO_INITDB_ROOT_PASSWORD:123456
+
+  server:
+    build: .
+    ports:
+      - 3000:3000
+      - 9222:9222
+    command: npm run __debug
+    volumes:
+      - ./dist_server:/app/dist_server
+      - ./dist_client:/app/dist_client
+    environment:
+      - PORT:3000

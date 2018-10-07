@@ -1,0 +1,14 @@
+{
+  "version": "2.0.0",
+  "tasks":[
+    {
+      "label": "tsc-watch",
+      "identifier": "tsc-watch",
+      "command": "npm",
+      "args": [ "run", "watch:server" ],
+      "isBackground": true,
+      "type": "shell",
+      "problemMatcher": "$tsc-watch"
+    }
+  ]
+}
