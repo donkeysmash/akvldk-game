@@ -1,5 +1,36 @@
 @import url('https://fonts.googleapis.com/css?family=Nanum+Gothic:400');
 
+:root {
+  font-size: 12px;
+}
+
+@media (min-width: 321px) {
+  :root {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 1224px) {
+  :root {
+    font-size: 22px;
+  }
+}
+
 body {
   font-family: 'Alegreya', serif;
+  height: 96vh;
+  margin: 0;
+  padding: 0;
 }
