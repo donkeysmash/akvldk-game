@@ -6,18 +6,18 @@ interface ISession {
 
 export interface ISessionModel extends ISession, Document { }
 
-
-let _sessionSchema: Schema = new Schema({
+const _sessionSchema: Schema = new Schema({
   name: String,
   createdAt: Date
 });
 
-_sessionSchema.pre('save', next => {
-  if (!this.createdAt) {
-    this.createdAt = new Date();
+_sessionSchema.pre('save', function(next) {
+  const createdAt = this.get('createdAt', Date);
+  if (!createdAt) {
+    const now = new Date();
+    this.set('createdAt', now);
   }
   next();
 });
-
 
 export const Session: Model<ISessionModel> = model<ISessionModel>('Session', _sessionSchema);
