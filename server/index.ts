@@ -1,6 +1,8 @@
+import * as http from 'http';
 import * as express from 'express';
 import * as path from 'path';
 import * as mongoose from 'mongoose';
+import * as socketIO from 'socket.io';
 import { SessionController, DevController } from './controllers';
 
 const app: express.Application = express();
@@ -17,10 +19,13 @@ if (isDevelopment) {
 
 app.use('/session', SessionController);
 
+const server = new http.Server(app);
+const io = socketIO(server);
+
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
-  app.listen(port, '0.0.0.0', () => console.log(`Server started at ${port}`));
+  server.listen(port, '0.0.0.0', () => console.log(`Server started at ${port}`));
 });
 
 
