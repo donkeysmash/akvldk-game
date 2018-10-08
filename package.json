@@ -27,6 +27,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "@types/socket.io": "^1.4.38",
+    "axios": "^0.18.0",
     "emotion": "^9.2.12",
     "express": "^4.16.3",
     "mongodb": "^3.1.6",
