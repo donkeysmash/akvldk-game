@@ -7,13 +7,22 @@ import config from '../config';
 
 
 class App extends Component {
-  async componentWillMount() {
-    const sessions = await axios.get(`${config.serverUri}/session`);
+  state = {
+    sessions: []
+  }
+
+  async componentDidMount() {
+    const sessions = (await axios.get(`${config.serverUri}/session`)).data;
+    this.setState({ sessions });
   }
 
   render() {
+    const { sessions } = this.state;
+    const list = sessions.map(session => <div>{session.name}</div>);
+
     return (
       <div className={className}>
+        {list}
         <NameForm />
       </div>
     );
@@ -22,7 +31,8 @@ class App extends Component {
 
 const className = css({
   display: 'flex',
-  justifyContent: 'center'
+  justifyContent: 'center',
+  flexDirection: 'column'
 });
 
 export default hot(module)(App);
