@@ -8,11 +8,8 @@ import config from '../config';
 
 class App extends Component {
   async componentWillMount() {
-    debugger;
-    // axios.get()
+    const sessions = await axios.get(`${config.serverUri}/session`);
   }
-
-
 
   render() {
     return (

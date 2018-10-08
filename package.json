@@ -5,7 +5,7 @@
   "scripts": {
     "__debug": "NODE_ENV=development nodemon --watch ./dist_server --inspect=0.0.0.0:9222 --nolazy ./dist_server/index.js",
     "debug:server": "docker-compose up --build",
-    "start:server": "node ./dist_server/index.js",
+    "start": "docker-compose -f docker-compose.prod.yml up",
     "build:server": "tsc",
     "watch:server": "tsc -w",
     "debug:client": "webpack-dev-server --hot --config ./client/webpack.config.js",
@@ -26,8 +26,10 @@
   "homepage": "https://github.com/donkeysmash/akvldk-game#readme",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "@types/cors": "^2.8.4",
     "@types/socket.io": "^1.4.38",
     "axios": "^0.18.0",
+    "cors": "^2.8.4",
     "emotion": "^9.2.12",
     "express": "^4.16.3",
     "mongodb": "^3.1.6",

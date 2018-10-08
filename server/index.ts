@@ -3,6 +3,7 @@ import * as express from 'express';
 import * as path from 'path';
 import * as mongoose from 'mongoose';
 import * as socketIO from 'socket.io';
+import * as cors from 'cors';
 import { SessionController, DevController } from './controllers';
 
 const app: express.Application = express();
@@ -12,6 +13,7 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 mongoose.connect('mongodb://mongo', { useNewUrlParser: true })
 
 if (isDevelopment) {
+  app.use(cors());
   app.use('/dev', DevController);
 } else {
   app.use(express.static(path.resolve(process.cwd(), 'dist_client')));
