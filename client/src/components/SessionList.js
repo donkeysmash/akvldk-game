@@ -15,7 +15,7 @@ class SessionList extends Component {
 
   render() {
     const { sessions } = this.state;
-    const list = sessions.map(session => <div>{session.name}</div>);
+    const list = sessions.map((session, i) => <div key={i}>{session.name}</div>);
     return (
       <div>
         {list}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
 import { hot } from 'react-hot-loader';
+import { Route } from 'react-router';
 import NameForm from './components/NameForm';
 import SessionList from './components/SessionList';
 
@@ -11,8 +12,8 @@ class App extends Component {
     return (
       <div className={rootCx}>
         <div className={containerCx}>
-          <SessionList />
-          <NameForm />
+          <Route path="/" component={SessionList}/>
+          <Route path="/" component={NameForm}/>
         </div>
       </div>
     );
