@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: [
     '@babel/polyfill',
     path.resolve(__dirname, 'src/index.js')
@@ -11,6 +11,10 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '../dist_client'),
     filename: 'client.bundle.js'
+  },
+  optimization: {
+    minimize: true,
+    nodeEnv: 'production'
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -20,7 +24,6 @@ module.exports = {
       defaultAttribute: 'defer'
     })
   ],
-
   module: {
     rules: [
       {
@@ -32,11 +35,5 @@ module.exports = {
         loader: ['style-loader', 'css-loader']
       }
     ]
-  },
-  devtool: 'eval-source-map',
-  devServer: {
-    host: '0.0.0.0',
-    port: 4000,
-    historyApiFallback: true
   }
-}
+};

@@ -10,7 +10,6 @@ services:
     ports:
       - 3000:3000
       - 9222:9222
-    command: npm run __debug
     depends_on:
       - mongo
     volumes:
