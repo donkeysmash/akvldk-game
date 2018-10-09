@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { Session } from '../models/session';
+import { io } from '../';
 
 
 const router: Router = Router();

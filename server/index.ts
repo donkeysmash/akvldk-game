@@ -2,11 +2,14 @@ import * as http from 'http';
 import * as express from 'express';
 import * as path from 'path';
 import * as mongoose from 'mongoose';
-import * as socketIO from 'socket.io';
 import * as cors from 'cors';
-import { SessionController, DevController } from './controllers';
+import * as morgan from 'morgan';
+import * as socketIO from 'socket.io';
+import { runSocketIO } from './socketHandlers';
+import { DevController, Routes } from './controllers';
 
 const app: express.Application = express();
+app.use(morgan('dev'));
 const port: number = Number(process.env.PORT) || 3000;
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -19,14 +22,15 @@ if (isDevelopment) {
   app.use(express.static(path.resolve(process.cwd(), 'dist_client')));
 }
 
-app.use('/session', SessionController);
+app.use('/api', Routes);
 
 const server = new http.Server(app);
-const io = socketIO(server);
+export const io = socketIO(server);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
+  runSocketIO();
   server.listen(port, '0.0.0.0', () => console.log(`Server started at ${port}`));
 });
 
