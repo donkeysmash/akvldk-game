@@ -2,18 +2,28 @@ import React, { Component } from 'react';
 import { css } from 'emotion';
 import { hot } from 'react-hot-loader';
 import { Route } from 'react-router';
-import NameForm from './components/NameForm';
+import PrivateRoute from './components/PrivateRoute';
+import Login from './components/Login';
+import Logout from './components/Logout';
 import SessionList from './components/SessionList';
+import SessionView from './components/SessionView';
+import nameStore from './store/name';
 
 
 class App extends Component {
+  componentWillMount() {
+    nameStore.load();
+  }
 
   render() {
     return (
       <div className={rootCx}>
         <div className={containerCx}>
-          <Route path="/" component={SessionList}/>
-          <Route path="/" component={NameForm}/>
+          <Route path="/logout" component={Logout} />
+          <Route path="/login" component={Login}/>
+          <PrivateRoute path="/sessions/:sessionId" component={SessionView} />
+          <Route exact path="/sessions" component={SessionList}/>
+          <Route exact path="/" component={SessionList}/>
         </div>
       </div>
     );
