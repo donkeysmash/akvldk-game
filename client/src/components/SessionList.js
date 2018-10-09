@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { css } from 'emotion';
 import axios from 'axios';
 import config from '../../config';
@@ -15,7 +16,8 @@ class SessionList extends Component {
 
   render() {
     const { sessions } = this.state;
-    const list = sessions.map((session, i) => <div key={i}>{session.name}</div>);
+    const list = sessions.map((session, i) =>
+      <Link key={i} to={`/sessions/${session._id}`}>{session.name}</Link>);
     return (
       <div>
         {list}

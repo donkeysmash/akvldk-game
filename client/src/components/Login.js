@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
+import { Redirect } from 'react-router-dom';
+import nameStore from '../store/name';
 
-class NameForm extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.nameRef = React.createRef();
@@ -15,10 +17,15 @@ class NameForm extends Component {
     e.preventDefault();
     this.setState({ isSubmitting: true });
     const inputValue = this.nameRef.current.value;
+    nameStore.setName(inputValue);
   }
 
   render() {
     const { isSubmitting } = this.state;
+    const { from } = this.props.location.state || { from: { pathname: "/" } };
+    if (nameStore.isNameAvailable()) {
+      return <Redirect to={from} />;
+    }
     return (
       <div className={rootCx}>
         <div className={welcomeCx}>
@@ -57,4 +64,4 @@ const formCx = css({
   marginTop: '0.5rem'
 });
 
-export default NameForm;
+export default Login;

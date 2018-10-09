@@ -6,7 +6,6 @@ import './root.css';
 
 const rootEl = document.getElementById('application');
 
-
 ReactDOM.render((
   <BrowserRouter>
     <App/>

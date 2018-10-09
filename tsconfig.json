@@ -5,6 +5,7 @@
     "sourceMap": true,
     "lib": [
       "es6"
-    ]
+    ],
+    "experimentalDecorators": true
   }
 }
