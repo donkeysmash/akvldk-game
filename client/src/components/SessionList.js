@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
+import axios from 'axios';
+import config from '../../config';
 
 class SessionList extends Component {
   state = {
@@ -12,9 +14,11 @@ class SessionList extends Component {
   }
 
   render() {
+    const { sessions } = this.state;
+    const list = sessions.map(session => <div>{session.name}</div>);
     return (
       <div>
-
+        {list}
       </div>
     );
   }
