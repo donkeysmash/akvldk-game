@@ -10,7 +10,8 @@
     "watch:server": "tsc -w",
     "debug:client": "webpack-dev-server --hot --config ./client/webpack.config.js",
     "build:client": "webpack --config ./client/webpack.prod.config.js",
-    "build": "npm run build:client && npm run build:server"
+    "build": "npm run build:client && npm run build:server",
+    "debug:sandbox": "webpack-dev-server --hot --config ./client/webpack.sb.config.js"
   },
   "repository": {
     "type": "git",
