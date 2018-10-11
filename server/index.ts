@@ -5,8 +5,10 @@ import * as mongoose from 'mongoose';
 import * as cors from 'cors';
 import * as morgan from 'morgan';
 import * as socketIO from 'socket.io';
+import * as bodyParser from 'body-parser';
 import { runSocketIO } from './socketHandlers';
-import { DevController, Routes } from './controllers';
+import { Routes } from './controllers';
+import { DevController } from './controllers/dev.controller';
 
 const app: express.Application = express();
 app.use(morgan('dev'));
@@ -15,6 +17,7 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 
 mongoose.connect('mongodb://mongo', { useNewUrlParser: true })
 
+app.use(bodyParser.json());
 if (isDevelopment) {
   app.use(cors());
   app.use('/dev', DevController);

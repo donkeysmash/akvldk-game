@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { Session } from '../models/session';
+import { Session } from '../models';
 import { io } from '../';
 
 

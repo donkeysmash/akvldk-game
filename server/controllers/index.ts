@@ -1,11 +1,10 @@
-export { SessionController } from './session.controller';
-export * from './dev.controller';
-
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 import { SessionController } from './session.controller';
+import { UserController } from './user.controller';
 
 const router: Router = Router();
 
+router.use('/user', UserController);
 router.use('/session', SessionController);
 
 export const Routes = router;
