@@ -28,6 +28,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "@types/cors": "^2.8.4",
+    "@types/morgan": "^1.7.35",
     "@types/socket.io": "^1.4.38",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",

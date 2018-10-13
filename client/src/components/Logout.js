@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import nameStore from '../store/name';
+import { inject, observer } from 'mobx-react';
 
+@inject('commonStore', 'userStore')
+@observer
 class Logout extends Component {
-  componentWillMount() {
-    nameStore.logout();
+  constructor(props) {
+    super(props);
+    const { userStore } = props;
+    userStore.forgetUser();
   }
 
   render() {

@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-import axios from 'axios';
 import config from '../../config';
-import nameStore from '../store/name';
+import { withRouter } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
 
+@inject('userStore')
+@withRouter
+@observer
 class SessionView extends Component {
   state = {
     participants: []
   };
 
   async componentDidMount() {
-    const { serverUri } = config;
-    const name = nameStore.getName();
+    const { displayName } = this.props.userStore;
     const { sessionId } = this.props.match.params;
     this.socket = io.connect(`${config.socketUri}/${sessionId}`);
-    this.socket.emit('name', name);
+    this.socket.emit('name', displayName);
     this.socket.on('participants', this.updateParticipants);
   }
 

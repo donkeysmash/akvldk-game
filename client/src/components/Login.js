@@ -1,29 +1,27 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
-import { Redirect } from 'react-router-dom';
-import nameStore from '../store/name';
+import { Redirect, withRouter } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
 
+@inject('userStore')
+@withRouter
+@observer
 class Login extends Component {
   constructor(props) {
     super(props);
     this.nameRef = React.createRef();
   }
 
-  state = {
-    isSubmitting: false
-  }
-
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
-    this.setState({ isSubmitting: true });
     const inputValue = this.nameRef.current.value;
-    nameStore.setName(inputValue);
+    await this.props.userStore.loginWithDisplayName(inputValue)
   }
 
   render() {
-    const { isSubmitting } = this.state;
+    const { userStore } = this.props;
     const { from } = this.props.location.state || { from: { pathname: "/" } };
-    if (nameStore.isNameAvailable()) {
+    if (userStore.currentUser) {
       return <Redirect to={from} />;
     }
     return (
@@ -38,7 +36,7 @@ class Login extends Component {
             type="text"
             placeholder="Name"
           />
-          <button className={buttonCx} disabled={isSubmitting}>Go</button>
+          <button className={buttonCx} disabled={userStore.loadingUser}>Go</button>
         </form>
       </div>
     );
