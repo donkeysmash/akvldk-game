@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import CreateSession from './CreateSession';
 import { css } from 'emotion';
 import { inject, observer } from 'mobx-react';
 
@@ -12,14 +13,12 @@ class SessionList extends Component {
 
   render() {
     const { sessions } = this.props.sessionStore;
-    if (!sessions.length) {
-      return null;
-    }
     const list = sessions.map((session, i) =>
-      <Link key={i} to={`/sessions/${session._id}`}>{session.name}</Link>);
+      <div key={i}><Link to={`/sessions/${session._id}`}>{session.name}</Link></div>);
     return (
       <div>
         {list}
+        <CreateSession />
       </div>
     );
   }

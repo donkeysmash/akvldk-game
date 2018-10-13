@@ -3,7 +3,6 @@ import { IUser, UserSchema } from './user';
 
 export interface ISession {
   name: string;
-  participants: Array<IUser>;
   host: IUser
 }
 
@@ -13,7 +12,6 @@ export const SessionSchema: Schema = new Schema({
   name: String,
   createdAt: Date,
   lastModified: Date,
-  participants: [UserSchema],
   host: UserSchema
 });
 

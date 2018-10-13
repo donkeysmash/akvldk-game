@@ -21,3 +21,5 @@ export function runSocketIO() {
     });
   });
 }
+
+// Maintain sessions on memory it could be redis eventually

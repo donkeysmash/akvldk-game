@@ -7,6 +7,7 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 import SessionList from './components/SessionList';
 import SessionView from './components/SessionView';
+import Header from './components/Header';
 import { inject, observer } from 'mobx-react';
 
 
@@ -36,6 +37,7 @@ class App extends Component {
       return (
         <div className={rootCx}>
           <div className={containerCx}>
+            <Header />
             <Switch>
               <Route path="/logout" component={Logout} />
               <Route path="/login" component={Login}/>

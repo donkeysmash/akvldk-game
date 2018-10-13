@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { observable, action, reaction } from 'mobx';
+import { observable, action, reaction, computed } from 'mobx';
 import config from '../../config';
 
 const KEY_NAME = 'akvldk-game-displayName';
@@ -24,6 +24,10 @@ class UserStore {
         }
       }
     );
+  }
+
+  @computed get userId() {
+    return this.currentUser._id;
   }
 
   @action forgetUser() {
