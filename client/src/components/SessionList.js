@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { css } from 'emotion';
-import axios from 'axios';
-import config from '../../config';
+import { inject, observer } from 'mobx-react';
 
+@inject('sessionStore')
+@observer
 class SessionList extends Component {
-  state = {
-    sessions: []
-  }
-
-  async componentDidMount() {
-    const sessions = (await axios.get(`${config.serverUri}/session`)).data;
-    this.setState({ sessions });
+  componentDidMount() {
+    this.props.sessionStore.getSessions();
   }
 
   render() {
-    const { sessions } = this.state;
+    const { sessions } = this.props.sessionStore;
+    if (!sessions.length) {
+      return null;
+    }
     const list = sessions.map((session, i) =>
       <Link key={i} to={`/sessions/${session._id}`}>{session.name}</Link>);
     return (

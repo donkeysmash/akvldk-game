@@ -10,7 +10,7 @@ const axiosConfig = {
 
 class UserStore {
   @observable currentUser;
-  @observable loadingUser;
+  @observable isLoading;
   @observable displayName = window.localStorage.getItem(KEY_NAME)
 
   constructor() {
@@ -32,7 +32,7 @@ class UserStore {
   }
 
   @action async loginWithDisplayName(displayName) {
-    this.loadingUser = true;
+    this.isLoading = true;
     try {
       const response = await axios.request({
         method: 'get',
@@ -45,7 +45,7 @@ class UserStore {
       console.log(err);
       this.forgetUser();
     } finally {
-      this.loadingUser = false;
+      this.isLoading = false;
     }
   }
 }

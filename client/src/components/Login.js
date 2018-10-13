@@ -36,7 +36,7 @@ class Login extends Component {
             type="text"
             placeholder="Name"
           />
-          <button className={buttonCx} disabled={userStore.loadingUser}>Go</button>
+          <button className={buttonCx} disabled={userStore.isLoading}>Go</button>
         </form>
       </div>
     );
