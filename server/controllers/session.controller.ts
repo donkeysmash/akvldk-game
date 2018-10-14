@@ -21,8 +21,24 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 router.get('/', async (req: Request, res: Response) => {
-  const sessions = await Session.find({});
-  res.json({ data: { sessions }});
+  try {
+    const sessions = await Session.find({});
+    res.json({ data: { sessions }});
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send(err);
+  }
+});
+
+router.get('/:sessionId', async (req: Request, res: Response) => {
+  try {
+    const { sessionId } = req.params;
+    const session = await Session.findById(sessionId);
+    return res.status(200).json({ data: { session }});
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send(err);
+  }
 });
 
 export const SessionController: Router = router;

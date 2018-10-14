@@ -11,18 +11,30 @@ class SessionView extends Component {
     super(props);
     const { gameStore, userStore, sessionStore, match } = props;
     sessionStore.setCurrentSessionId(match.params.sessionId);
-    // gameStore.join(userStore.userId);
+    if (!sessionStore.currentSession) {
+      sessionStore.getSession(match.params.sessionId);
+    }
+    gameStore.joinGame(userStore.userId);
   }
 
   render() {
     const { gameStore, userStore, sessionStore } = this.props;
+    if (sessionStore.isLoading) {
+      return null;
+    }
+
     const { currentSession } = sessionStore;
+    const { participants } = gameStore;
+    const  ps = participants.map((p, i) => <div key={i}>{p}</div>)
     return (
       <div className={rootCx}>
         <div className={sessionNameCx}>{currentSession.name}</div>
         <div className={hostNameCx}>
             Created by
             <span className={displayNameCx}>{currentSession.host.displayName}</span>
+        </div>
+        <div className={participantsCx}>
+          {ps}
         </div>
       </div>
     );
@@ -43,6 +55,9 @@ const displayNameCx = css({
   marginLeft: '0.5rem',
   fontWeight: 'bold',
   color: 'orange'
+});
+const participantsCx = css({
+  color: 'blue'
 });
 
 export default SessionView;

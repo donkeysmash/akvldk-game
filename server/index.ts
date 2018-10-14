@@ -18,14 +18,13 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 mongoose.connect('mongodb://mongo', { useNewUrlParser: true })
 
 app.use(bodyParser.json());
-if (isDevelopment) {
-  app.use(cors());
-  app.use('/dev', DevController);
-} else {
-  app.use(express.static(path.resolve(process.cwd(), 'dist_client')));
-}
-
+app.use('/dev', DevController);
 app.use('/api', Routes);
+app.use(express.static(path.resolve(process.cwd(), 'dist_client')));
+
+app.use('*', (req, res) => {
+  res.sendFile(path.resolve(process.cwd(), 'public', 'index.html'));
+});
 
 const server = new http.Server(app);
 export const io = socketIO(server);

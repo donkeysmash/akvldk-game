@@ -1,9 +1,8 @@
-
 function getConfig(env) {
   const config = {
     development: {
-      serverUri: 'http://localhost:3000/api',
-      socketUri: 'http://localhost:3000'
+      serverUri: '/api',
+      socketUri: ''
     },
     production: {
       serverUri: '/api',
@@ -12,8 +11,5 @@ function getConfig(env) {
   };
   return config[env];
 }
-
-
-
 
 export default getConfig(process.env.NODE_ENV);

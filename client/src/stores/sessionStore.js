@@ -10,7 +10,7 @@ const axiosConfig = {
 
 class SessionStore {
   @observable currentSessionId;
-  @observable sessions = [];
+  @observable sessions = {};
   @observable isLoading = false;
   @observable isCreating = false;
 
@@ -21,7 +21,11 @@ class SessionStore {
         method: 'get',
         ...axiosConfig
       });
-      this.sessions = response.data.data.sessions;
+      const resSessions = response.data.data.sessions;
+      this.sessions = resSessions.reduce((acc, v) => {
+        acc[v._id] = v;
+        return acc;
+      }, {});
     } catch (err) {
       console.log(err);
       userStore.forgetUser();
@@ -38,11 +42,29 @@ class SessionStore {
         data: { name, hostId },
         ...axiosConfig
       });
-      this.sessions.push(response.data.data.session);
+      const resSession = response.data.data.session;
+      this.sessions[resSession._id] = resSession;
     } catch (err) {
       console.log(err);
     } finally {
       this.isCreating = false;
+    }
+  }
+
+  @action async getSession(sessionId) {
+    this.isLoading = true;
+    try {
+      const response = await axios.request({
+        ...axiosConfig,
+        method: 'get',
+        url: `/session/${sessionId}`
+      });
+      const resSession = response.data.data.session;
+      this.sessions[resSession._id] = resSession;
+    } catch (err) {
+      console.log(err);
+    } finally {
+      this.isLoading = false;
     }
   }
 
@@ -51,7 +73,7 @@ class SessionStore {
   }
 
   @computed get currentSession() {
-    return this.sessions.find(session => session._id === this.currentSessionId);
+    return this.sessions[this.currentSessionId];
   }
 
 }
