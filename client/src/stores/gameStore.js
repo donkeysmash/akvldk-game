@@ -8,24 +8,15 @@ import config from '../../config';
 
 class GameStore {
   @observable participants = [];
-  socket;
 
   connect() {
     const sessionId = sessionStore.currentSessionId;
     const uri = `${config.socketUri}/${sessionId}`;
     const {userId} = userStore
-    this.socket = io.connect(uri, {
-      query: { userId }
-    });
-    this.socket.on('participants', this.setParticipants);
   }
 
   @action.bound setParticipants(participants) {
     this.participants = participants;
-  }
-
-  close() {
-    this.socket.close();
   }
 }
 
