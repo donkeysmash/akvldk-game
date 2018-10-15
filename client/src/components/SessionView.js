@@ -14,7 +14,7 @@ class SessionView extends Component {
     if (!sessionStore.currentSession) {
       sessionStore.getSession(match.params.sessionId);
     }
-    gameStore.joinGame(userStore.userId);
+    gameStore.connect();
   }
 
   render() {

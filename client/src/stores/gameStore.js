@@ -10,13 +10,22 @@ class GameStore {
   @observable participants = [];
   socket;
 
-  @action joinGame() {
+  connect() {
     const sessionId = sessionStore.currentSessionId;
     const uri = `${config.socketUri}/${sessionId}`;
-    this.socket = io.connect(uri);
-    this.socket.emit('join', userStore.userId);
-    this.socket.on('participants',
-      (participants) => this.participants = participants)
+    const {userId} = userStore
+    this.socket = io.connect(uri, {
+      query: { userId }
+    });
+    this.socket.on('participants', this.setParticipants);
+  }
+
+  @action.bound setParticipants(participants) {
+    this.participants = participants;
+  }
+
+  close() {
+    this.socket.close();
   }
 }
 

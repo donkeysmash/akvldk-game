@@ -13,8 +13,10 @@ class SessionList extends Component {
 
   render() {
     const { sessions } = this.props.sessionStore;
-    const list = sessions.map((session, i) =>
-      <div key={i}><Link to={`/sessions/${session._id}`}>{session.name}</Link></div>);
+
+    const list = Object.keys(sessions).map((k, i) => {
+      return (<div key={i}><Link to={`/sessions/${sessions[k]._id}`}>{sessions[k].name}</Link></div>)
+    });
     return (
       <div>
         {list}
