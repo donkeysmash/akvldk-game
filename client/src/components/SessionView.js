@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { css } from 'emotion';
 import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
+import { Client } from 'colyseus.js';
 
 @inject('userStore', 'gameStore', 'sessionStore')
 @withRouter

@@ -31,6 +31,8 @@
     "@types/morgan": "^1.7.35",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
+    "colyseus": "^0.9.17",
+    "colyseus.js": "^0.9.14",
     "cors": "^2.8.4",
     "emotion": "^9.2.12",
     "express": "^4.16.3",

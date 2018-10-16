@@ -8,6 +8,6 @@ RUN npm install
 
 COPY dist_server/ dist_server/
 
-EXPOSE 3000
+EXPOSE 3000 3001
 
 CMD ["node", "dist_server/index.js"]

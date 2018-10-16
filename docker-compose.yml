@@ -9,6 +9,7 @@ services:
     build: .
     ports:
       - 3000:3000
+      - 3001:3001
       - 9222:9222
     command: npm run __debug
     depends_on:
@@ -19,3 +20,4 @@ services:
       - ./client/public:/app/public
     environment:
       - PORT:3000
+      - DEBUG:colyseus\:*

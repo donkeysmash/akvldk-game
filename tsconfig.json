@@ -3,6 +3,8 @@
     "rootDir": "./server",
     "outDir": "./dist_server",
     "sourceMap": true,
+    "target": "es2017",
+    "module": "commonjs",
     "lib": [
       "es6"
     ],
