@@ -3,6 +3,7 @@ import { IUserModel } from '../models/user';
 import { withinRange } from '../utils';
 
 export enum Roles {
+  UNASSIGNED,
   POLICE,
   MAFIA,
   DOCTOR,
@@ -22,11 +23,16 @@ export class Mafia {
   public stage: Stage;
   public participants: Map<string, IUserModel>;
   public numParty: number;
+  public roles: Map<string, Roles>;
 
   constructor(participants: Map<string, IUserModel>) {
     this.participants = participants;
     this.stage = Stage.READY_TO_START;
     this.numParty = this.participants.size;
+    this.roles = new Map();
+    participants.forEach((v, k) => {
+      this.roles.set(k, Roles.UNASSIGNED);
+    });
   }
 
   public startGame() {
