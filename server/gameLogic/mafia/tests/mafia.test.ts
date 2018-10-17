@@ -1,7 +1,7 @@
-import { Mafia, Stage, Roles } from '../mafia';
+import { Mafia, Stage, Roles } from '../';
 import { expect } from 'chai';
 import 'mocha';
-import { IUserModel, User } from '../../models/user';
+import { IUserModel, User } from '../../../models/user';
 
 
 function genMockParticipants(targetSize: number, namePrefix = 'user'): Map<string, IUserModel> {
@@ -68,5 +68,27 @@ describe('Mafia Game Logic', () => {
     });
   });
 
+  describe('assignRole', () => {
+    it('should assign roles to all players', () => {
+      let mafia: Mafia = new Mafia(mockParticipants); // 7 participants
+      mafia.assignRole();
+      const computed = Array.from(mafia.roles.values()).reduce((acc, v) => {
+        if (!acc[v]) {
+          acc[v] = 1;
+        } else {
+          acc[v] = acc[v] + 1;
+        }
+        return acc;
+      }, {});
+      const expected = {
+        [Roles.CITIZEN]: 5,
+        [Roles.MAFIA]: 2
+      };
+      expect(computed).to.deep.equal(expected);
+    });
+  });
 
+  describe('startGame', () => {
+
+  });
 });

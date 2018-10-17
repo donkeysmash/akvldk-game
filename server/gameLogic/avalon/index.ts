@@ -1,4 +1,3 @@
-import shuffle from 'fisher-yates-shuffle';
 import { IUserModel } from '../models/user';
 
 enum Stage {

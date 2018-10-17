@@ -1,6 +1,6 @@
-import shuffle from 'fisher-yates-shuffle';
-import { IUserModel } from '../models/user';
-import { withinRange } from '../utils';
+import { IUserModel } from '../../models/user';
+import { withinRange, fyShuffle } from '../../utils';
+import { Game } from '../game';
 
 export enum Roles {
   UNASSIGNED,
@@ -19,7 +19,7 @@ export enum Stage {
   NIGHT
 }
 
-export class Mafia {
+export class Mafia implements Game {
   public stage: Stage;
   public participants: Map<string, IUserModel>;
   public numParty: number;
@@ -46,8 +46,17 @@ export class Mafia {
   }
 
   public assignRole(settings = {/* TODO have a custom settings for roles */}) {
-    const shuffledUserId = shuffle(Array.from(this.participants.keys()));
-    const { numMafia, numCitizen } = this.calcNumRoles();
+    const shuffledUserId = fyShuffle(Array.from(this.participants.keys()));
+    let { numMafia, numCitizen } = this.calcNumRoles();
+    for (let userId of shuffledUserId) {
+      if (numMafia > 0) {
+        this.roles.set(userId, Roles.MAFIA);
+        numMafia--;
+      } else if (numCitizen > 0) {
+        this.roles.set(userId, Roles.CITIZEN);
+        numCitizen--;
+      }
+    }
   }
 
   private calcNumRoles() {
