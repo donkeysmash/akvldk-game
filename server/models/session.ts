@@ -1,9 +1,11 @@
 import { Model, model, Document, Schema } from 'mongoose';
 import { IUser, UserSchema } from './user';
+import { GameTypes } from '../gameLogic/game';
 
 export interface ISession {
   name: string;
-  host: IUser
+  host: IUser;
+  gameType: GameTypes
 }
 
 export interface ISessionModel extends ISession, Document {}
@@ -12,6 +14,7 @@ export const SessionSchema: Schema = new Schema({
   name: String,
   createdAt: Date,
   lastModified: Date,
+  gameType: String,
   host: UserSchema
 });
 

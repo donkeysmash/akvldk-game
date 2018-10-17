@@ -1,4 +1,4 @@
-import { IUserModel } from '../models/user';
+import { IUserModel } from '../../models/user';
 
 enum Stage {
   READY_TO_START,

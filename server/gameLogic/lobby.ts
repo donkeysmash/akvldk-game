@@ -6,11 +6,12 @@ class Lobby {
   sessionId: string;
   session: ISessionModel;
   participants: Map<string, IUserModel>;
-  game: Game;
+  isLocked: boolean;
 
   constructor(sessionId) {
     this.sessionId = sessionId;
     this.participants = new Map();
+    this.isLocked = false;
   }
 
   async create() {

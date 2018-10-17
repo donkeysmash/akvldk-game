@@ -1,6 +1,6 @@
 import { IUserModel } from '../../models/user';
 import { withinRange, fyShuffle } from '../../utils';
-import { Game } from '../game';
+import { Game, GameTypes } from '../game';
 
 export enum Roles {
   UNASSIGNED,
@@ -20,12 +20,14 @@ export enum Stage {
 }
 
 export class Mafia implements Game {
+  gameType: GameTypes;
   public stage: Stage;
   public participants: Map<string, IUserModel>;
   public numParty: number;
   public roles: Map<string, Roles>;
 
   constructor(participants: Map<string, IUserModel>) {
+    this.gameType = GameTypes.MAFIA;
     this.participants = participants;
     this.stage = Stage.READY_TO_START;
     this.numParty = this.participants.size;
