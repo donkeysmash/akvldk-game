@@ -11,13 +11,14 @@ class Header extends Component {
     if (userStore.currentUser) {
       return (
         <div className={rootCx}>
-          <Link to="/logout">logout</Link>
+          <span>{userStore.displayName}</span>
+          <Link className={linkCx} to="/logout">logout</Link>
         </div>
       );
     }
     return (
         <div className={rootCx}>
-          <Link to="/login">login</Link>
+          <Link className={linkCx} to="/login">login</Link>
         </div>
     );
   }
@@ -25,7 +26,13 @@ class Header extends Component {
 
 const rootCx = css({
   marginTop: '1rem',
-  backgroundColor: 'pink'
+  backgroundColor: 'pink',
+  textAlign: 'right'
+});
+
+const linkCx = css({
+  marginRight: '1rem',
+  marginLeft: '1rem'
 });
 
 export default Header;

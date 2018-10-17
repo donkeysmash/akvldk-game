@@ -4,8 +4,6 @@ import userStore from './userStore';
 import { observable, action, reaction } from 'mobx';
 import config from '../../config';
 
-// maybe make them socket as observers
-
 class GameStore {
   @observable participants = [];
   socket;
@@ -22,6 +20,10 @@ class GameStore {
 
   @action.bound setParticipants(participants) {
     this.participants = participants;
+  }
+
+  leave() {
+    this.socket.emit('leave', userStore.userId);
   }
 
   close() {

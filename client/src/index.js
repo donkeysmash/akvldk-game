@@ -20,4 +20,4 @@ ReactDOM.render((
     </BrowserRouter>
     </div>
   </Provider>
-), rootEl)
+), rootEl);

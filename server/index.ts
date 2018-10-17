@@ -2,11 +2,10 @@ import * as http from 'http';
 import * as express from 'express';
 import * as path from 'path';
 import * as mongoose from 'mongoose';
-import * as cors from 'cors';
 import * as morgan from 'morgan';
 import * as socketIO from 'socket.io';
 import * as bodyParser from 'body-parser';
-import { runSocketIO } from './socketHandlers';
+import { runSocketIO } from './gameLogic';
 import { Routes } from './controllers';
 import { DevController } from './controllers/dev.controller';
 

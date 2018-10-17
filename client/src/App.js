@@ -60,7 +60,7 @@ const rootCx = css({
 });
 
 const containerCx = css({
-  maxWidth: '30rem'
+  width: '90vw',
 });
 
 export default hot(module)(App);

@@ -1,23 +1,28 @@
 import { Session } from '../models/session';
 import { io } from '../';
-import GameRound from './gameRound';
+import Lobby from './lobby';
 
-const activeGames: Map<string, GameRound> = new Map();
+const activeGames: Map<string, Lobby> = new Map();
 
 export function runSocketIO() {
   io.of(/^\/.+$/ as any).on('connection', async socket => {
     const sessionId = socket.nsp.name.substring(1);
     console.log('new connection', sessionId, 'socket', socket.conn.id);
     if (!activeGames.has(sessionId)) {
-      activeGames.set(sessionId, new GameRound(sessionId));
+      activeGames.set(sessionId, new Lobby(sessionId));
       await activeGames.get(sessionId).create();
     }
-    const connectedGame = activeGames.get(sessionId);
+    const lobby = activeGames.get(sessionId);
     const { userId } = socket.handshake.query;
-    await connectedGame.addUser(userId, socket);
-    const dpNames = connectedGame.extractDisplayNames();
+    await lobby.addUser(userId);
+    const dpNames = lobby.extractDisplayNames();
     console.log(`  emitting participants: ${dpNames}`)
     io.of(socket.nsp.name).emit('participants', dpNames);
+
+    socket.on('leave', userId => {
+      lobby.removeUser(userId);
+      io.of(socket.nsp.name).emit('participants', dpNames);
+    });
   });
 }
 

@@ -33,6 +33,7 @@
     "body-parser": "^1.18.3",
     "emotion": "^9.2.12",
     "express": "^4.16.3",
+    "fisher-yates-shuffle": "^0.2.0",
     "mobx": "^5.5.0",
     "mobx-react": "^5.2.8",
     "mongodb": "^3.1.6",
