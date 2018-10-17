@@ -8,6 +8,7 @@
     "start": "docker-compose -f docker-compose.prod.yml up",
     "build:server": "tsc",
     "watch:server": "tsc -w",
+    "test:server": "mocha -r ts-node/register server/**/*.test.ts",
     "debug:client": "webpack --config ./client/webpack.config.js",
     "build:client": "webpack --config ./client/webpack.prod.config.js",
     "build": "npm run build:client && npm run build:server",

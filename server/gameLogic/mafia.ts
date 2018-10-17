@@ -9,7 +9,7 @@ export enum Roles {
   CITIZEN
 }
 
-enum Stage {
+export enum Stage {
   READY_TO_START,
   INIT,
   DAY,
