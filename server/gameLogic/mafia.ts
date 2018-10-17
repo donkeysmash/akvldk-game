@@ -41,7 +41,7 @@ export class Mafia {
     }
 
     if (this.numParty < 5) {
-      throw new Error(`at least 7 players are required numPlayers$${this.numParty}`);
+      throw new Error(`at least 5 players are required numPlayers$${this.numParty}`);
     }
   }
 
@@ -52,7 +52,9 @@ export class Mafia {
 
   private calcNumRoles() {
     let numMafia;
-    if (withinRange(this.numParty, 5, 9)) {
+    if (!this.numParty || this.numParty < 5) {
+      throw new Error(`at least 5 players are required to calculate numRoles`);
+    } else if (withinRange(this.numParty, 5, 9)) {
       numMafia = 2;
     } else if (withinRange(this.numParty, 9, 13)) {
       numMafia = 3;

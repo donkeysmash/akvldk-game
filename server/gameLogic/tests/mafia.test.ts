@@ -40,9 +40,32 @@ describe('Mafia Game Logic', () => {
     });
   });
 
-  describe('assign Role', () => {
-    let mafia = new Mafia(mockParticipants);
+  describe('calcNumRoles', () => {
+    it('should set number of mafia correctly with valid input', () => {
+      let participants = genMockParticipants(5);
+      let mafia: Mafia = new Mafia(participants);
+      expect(mafia['calcNumRoles'].bind(mafia)).to.not.throws();
+      expect(mafia['calcNumRoles'].bind(mafia)()).to.deep.equals({ numMafia: 2, numCitizen: 3 });
 
+      participants = genMockParticipants(7);
+      mafia = new Mafia(participants);
+      expect(mafia['calcNumRoles'].bind(mafia)).to.not.throws();
+      expect(mafia['calcNumRoles'].bind(mafia)()).to.deep.equals({ numMafia: 2, numCitizen: 5 });
+
+      participants = genMockParticipants(9);
+      mafia = new Mafia(participants);
+      expect(mafia['calcNumRoles'].bind(mafia)).to.not.throws();
+      expect(mafia['calcNumRoles'].bind(mafia)()).to.deep.equals({ numMafia: 3, numCitizen: 6 });
+
+      participants = genMockParticipants(13);
+      mafia = new Mafia(participants);
+      expect(mafia['calcNumRoles'].bind(mafia)).to.not.throws();
+      expect(mafia['calcNumRoles'].bind(mafia)()).to.deep.equals({ numMafia: 4, numCitizen: 13 - 4 });
+    });
+    it('should throw an error for invalid input', () => {
+      const mafia: Mafia = new Mafia(new Map());
+      expect(mafia['calcNumRoles'].bind(mafia)).to.throws();
+    });
   });
 
 
