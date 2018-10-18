@@ -1,8 +1,7 @@
 dist_client/
 dist_server/
 
-.vscode/launch.json
-.vscode/tasks.json
+.vscode/*.json
 
 # Logs
 logs

@@ -2,10 +2,18 @@
   "compilerOptions": {
     "rootDir": "./server",
     "outDir": "./dist_server",
+    "target": "es2017",
+    "module": "commonjs",
     "sourceMap": true,
     "lib": [
       "es6"
     ],
     "experimentalDecorators": true
-  }
+  },
+  "include": [
+    "./server/**/*"
+  ],
+  "exclude": [
+    "./server/**/*.test.ts"
+  ]
 }

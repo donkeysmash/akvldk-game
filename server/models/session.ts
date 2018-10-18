@@ -1,23 +1,31 @@
 import { Model, model, Document, Schema } from 'mongoose';
+import { UserSchema, IUserModel } from './user';
+import { GameTypes } from '../gameLogic/game';
 
-interface ISession {
+export interface ISession {
   name: string;
+  host: IUserModel;
+  gameType: GameTypes
 }
 
-export interface ISessionModel extends ISession, Document { }
+export interface ISessionModel extends ISession, Document {}
 
-const _sessionSchema: Schema = new Schema({
+export const SessionSchema: Schema = new Schema({
   name: String,
-  createdAt: Date
+  createdAt: Date,
+  lastModified: Date,
+  gameType: String,
+  host: UserSchema
 });
 
-_sessionSchema.pre('save', function(next) {
+SessionSchema.pre('save', function(next) {
+  const now = new Date();
   const createdAt = this.get('createdAt', Date);
   if (!createdAt) {
-    const now = new Date();
     this.set('createdAt', now);
   }
+  this.set('lastModified', now);
   next();
 });
 
-export const Session: Model<ISessionModel> = model<ISessionModel>('Session', _sessionSchema);
+export const Session: Model<ISessionModel> = model<ISessionModel>('Session', SessionSchema);

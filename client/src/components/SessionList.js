@@ -1,29 +1,38 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import CreateSession from './CreateSession';
+import SessionItem from './SessionItem';
 import { css } from 'emotion';
-import axios from 'axios';
-import config from '../../config';
+import { inject, observer } from 'mobx-react';
 
+@inject('sessionStore')
+@observer
 class SessionList extends Component {
-  state = {
-    sessions: []
-  }
-
-  async componentDidMount() {
-    const sessions = (await axios.get(`${config.serverUri}/session`)).data;
-    this.setState({ sessions });
+  componentDidMount() {
+    this.props.sessionStore.getSessions();
   }
 
   render() {
-    const { sessions } = this.state;
-    const list = sessions.map((session, i) =>
-      <Link key={i} to={`/sessions/${session._id}`}>{session.name}</Link>);
+    const { sessions } = this.props.sessionStore;
+
+    const items = Object.keys(sessions).map((k, i) => {
+      return <SessionItem key={i} session={sessions[k]} />
+    });
     return (
-      <div>
-        {list}
+      <div className={rootCx}>
+        <div className={itemsCx}>
+          {items}
+        </div>
+        <CreateSession />
       </div>
     );
   }
 }
+
+const rootCx = css({
+  marginTop: '1rem'
+});
+const itemsCx = css({
+});
 
 export default SessionList;

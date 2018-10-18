@@ -4,14 +4,13 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  watch: true,
   entry: [
     '@babel/polyfill',
-    path.resolve(__dirname, 'src/index.js')
+    path.resolve(__dirname, 'src/sandbox.js')
   ],
   output: {
     path: path.resolve(__dirname, '../dist_client'),
-    filename: 'zmff.bundle.js'
+    filename: 'sb.bundle.js'
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -34,5 +33,10 @@ module.exports = {
       }
     ]
   },
-  devtool: 'eval-source-map'
+  devtool: 'eval-source-map',
+  devServer: {
+    host: '0.0.0.0',
+    port: 4001,
+    historyApiFallback: true
+  }
 }

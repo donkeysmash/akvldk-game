@@ -1,33 +1,35 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
-import { Redirect, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 
-@inject('userStore')
-@withRouter
+@inject('userStore', 'sessionStore')
 @observer
-class Login extends Component {
+class CreateSession extends Component {
   constructor(props) {
     super(props);
     this.nameRef = React.createRef();
+    this.gameTypeRef = React.createRef();
   }
 
   handleSubmit = async e => {
     e.preventDefault();
+    const { userStore, sessionStore } = this.props;
+    const hostId = userStore.currentUser._id;
     const inputValue = this.nameRef.current.value;
-    await this.props.userStore.loginWithDisplayName(inputValue)
+    const gameType = this.gameTypeRef.current.value;
+    await sessionStore.createSession(inputValue, hostId, gameType);
+    this.nameRef.current.value = '';
   }
 
   render() {
-    const { userStore } = this.props;
-    const { from } = this.props.location.state || { from: { pathname: "/" } };
-    if (userStore.currentUser) {
-      return <Redirect to={from} />;
+    const { userStore, sessionStore } = this.props;
+    if (!userStore.currentUser) {
+      return null;
     }
     return (
       <div className={rootCx}>
         <div className={welcomeCx}>
-          Mafia game helper
+          Create new session
         </div>
         <form className={formCx} onSubmit={this.handleSubmit}>
           <input
@@ -36,7 +38,11 @@ class Login extends Component {
             type="text"
             placeholder="Name"
           />
-          <button className={buttonCx} disabled={userStore.isLoading}>Go</button>
+          <select ref={this.gameTypeRef}>
+            <option value="MAFIA">Mafia</option>
+            <option value="RSP">RSP</option>
+          </select>
+          <button className={buttonCx} disabled={sessionStore.isCreating}>Go</button>
         </form>
       </div>
     );
@@ -51,7 +57,6 @@ const welcomeCx = css({
   fontSize: '2rem'
 });
 const inputCx = css({
-  width: '90%',
   display: 'block'
 });
 const buttonCx = css({
@@ -62,4 +67,4 @@ const formCx = css({
   marginTop: '0.5rem'
 });
 
-export default Login;
+export default CreateSession;
