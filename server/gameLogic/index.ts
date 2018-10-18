@@ -13,22 +13,29 @@ export function runSocketIO() {
       await activeGames.get(sessionId).create();
     }
     const lobby = activeGames.get(sessionId);
-    const { userId } = socket.handshake.query;
-    lobby.addConnection(userId, socket);
-    await lobby.addUser(userId);
-    const dpNames = lobby.extractDisplayNames();
-    console.log(`  emitting participants: ${dpNames}`)
-    io.of(socket.nsp.name).emit('participants', dpNames);
+    if (!lobby.isLocked) {
+      const { userId } = socket.handshake.query;
+      lobby.addConnection(userId, socket);
+      await lobby.addUser(userId);
+      const dpNames = lobby.extractDisplayNames();
+      console.log(`  emitting participants: ${dpNames}`)
+      io.of(socket.nsp.name).emit('participants', dpNames);
+    }
 
     socket.on('leave', userId => {
-      lobby.removeUser(userId);
+      if (!lobby.isLocked) {
+        lobby.removeUser(userId);
+      }
+      const dpNames = lobby.extractDisplayNames();
       io.of(socket.nsp.name).emit('participants', dpNames);
     });
 
-    socket.on('startGame', userId => {
+    socket.on('startGame', (userId, startState) => {
+      console.log('start game requested');
       if (lobby.getHostId() === userId) {
+        console.log('starting game');
         lobby.lock();
-        lobby.startGame();
+        lobby.startGame(startState);
       }
     });
   });

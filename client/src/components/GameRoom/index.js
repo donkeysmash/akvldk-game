@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { inject, observer } from 'mobx-react';
 import Rsp from './Rsp';
 
 @inject('gameStore', 'sessionStore')

@@ -1,4 +1,4 @@
-import { ITurnGame, GameTypes, GameState } from "../game";
+import { ITurnGame, GameTypes, GameStateMsg } from "../game";
 import { IUserModel } from "../../models/user";
 import { Socket } from "socket.io";
 
@@ -24,6 +24,7 @@ function* genStage() {
 
 
 export class Rsp implements ITurnGame {
+  gameState: object;
   gameType: GameTypes;
   stageGenerator: Iterator<RpsStage>
   public socket: Socket;
@@ -37,9 +38,17 @@ export class Rsp implements ITurnGame {
     this.currentStage = this.stageGenerator.next().value;
   }
 
-  public run(gameState: GameState): GameState {
-    return {
-      isStarted: true
+  public process(gameState): void {
+    if (!gameState.isStarted) {
+      this.gameState = { isStarted: true };
+      return;
     }
+  }
+
+  public emit(): GameStateMsg {
+    return {
+      target: 'all',
+      gameState: this.gameState
+    };
   }
 }

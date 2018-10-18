@@ -3,11 +3,14 @@ import { Socket } from 'socket.io';
 
 export interface ITurnGame {
   gameType: GameTypes;
-  run(gameState: GameState): GameState;
-};
+  gameState: object;
+  process(gameState: any): void;
+  emit(): GameStateMsg;
+}
 
-export interface GameState {
-  isStarted: boolean;
+export interface GameStateMsg {
+  gameState: object;
+  target: 'all' | string[]
 }
 
 export enum GameTypes {

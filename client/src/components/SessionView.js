@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { css } from 'emotion';
 import { withRouter } from 'react-router-dom';
+import GameRoom from './GameRoom';
 import { inject, observer } from 'mobx-react';
 
 @inject('userStore', 'gameStore', 'sessionStore')
