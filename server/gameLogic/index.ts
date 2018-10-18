@@ -14,6 +14,7 @@ export function runSocketIO() {
     }
     const lobby = activeGames.get(sessionId);
     const { userId } = socket.handshake.query;
+    lobby.addConnection(userId, socket);
     await lobby.addUser(userId);
     const dpNames = lobby.extractDisplayNames();
     console.log(`  emitting participants: ${dpNames}`)
@@ -27,7 +28,7 @@ export function runSocketIO() {
     socket.on('startGame', userId => {
       if (lobby.getHostId() === userId) {
         lobby.lock();
-        lobby.startGame(socket);
+        lobby.startGame();
       }
     });
   });

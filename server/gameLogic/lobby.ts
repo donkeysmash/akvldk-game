@@ -1,18 +1,21 @@
 import { IUserModel, User } from '../models/user';
 import { ISessionModel, Session } from '../models/session';
 import { GameTypes } from './game';
-import { Rps } from './rps';
+import { Rsp } from "./Rsp";
+import { io } from '../';
 import { Socket } from 'socket.io';
 
 class Lobby {
   sessionId: string;
   session: ISessionModel;
   participants: Map<string, IUserModel>;
+  connections: Map<string, Socket>;
   isLocked: boolean;
 
   constructor(sessionId) {
     this.sessionId = sessionId;
     this.participants = new Map();
+    this.connections = new Map();
     this.isLocked = false;
   }
 
@@ -27,11 +30,13 @@ class Lobby {
     }
   }
 
-  startGame(socket: Socket) {
-    switch(this.session.gameType) {
-      case GameTypes.RSP:
-        return (new Rps(this.participants, socket)).run();
-    }
+  addConnection(userId: string, socket: Socket) {
+    this.connections.set(userId, socket);
+  }
+
+  startGame() {
+    const nsp = io.of(`/${this.sessionId}`);
+    const game = new Rsp(this.participants);
   }
 
 

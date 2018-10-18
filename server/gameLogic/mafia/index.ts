@@ -1,6 +1,6 @@
 import { IUserModel } from '../../models/user';
 import { withinRange, fyShuffle } from '../../utils';
-import { Game, GameTypes } from '../game';
+import { ITurnGame, GameTypes } from '../game';
 import { Socket } from 'socket.io';
 
 export enum Roles {
@@ -20,16 +20,14 @@ export enum Stage {
   NIGHT
 }
 
-export class Mafia implements Game {
+export class Mafia /*implements ITurnGame*/ {
   gameType: GameTypes;
   public stage: Stage;
   public participants: Map<string, IUserModel>;
   public numParty: number;
   public roles: Map<string, Roles>;
-  public socket: Socket;
 
-  constructor(participants: Map<string, IUserModel>, socket: Socket) {
-    this.socket = socket;
+  constructor(participants: Map<string, IUserModel>) {
     this.gameType = GameTypes.MAFIA;
     this.participants = participants;
     this.stage = Stage.READY_TO_START;

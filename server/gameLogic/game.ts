@@ -1,10 +1,14 @@
 import { IUserModel } from '../models/user';
 import { Socket } from 'socket.io';
 
-export interface Game {
+export interface ITurnGame {
   gameType: GameTypes;
-  socket: Socket;
+  run(gameState: GameState): GameState;
 };
+
+export interface GameState {
+  isStarted: boolean;
+}
 
 export enum GameTypes {
   MAFIA = 'MAFIA',
