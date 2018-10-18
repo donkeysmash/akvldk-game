@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import CreateSession from './CreateSession';
+import SessionItem from './SessionItem';
 import { css } from 'emotion';
 import { inject, observer } from 'mobx-react';
 
@@ -14,16 +15,24 @@ class SessionList extends Component {
   render() {
     const { sessions } = this.props.sessionStore;
 
-    const list = Object.keys(sessions).map((k, i) => {
-      return (<div key={i}><Link to={`/sessions/${sessions[k]._id}`}>{sessions[k].name}</Link></div>)
+    const items = Object.keys(sessions).map((k, i) => {
+      return <SessionItem key={i} session={sessions[k]} />
     });
     return (
-      <div>
-        {list}
+      <div className={rootCx}>
+        <div className={itemsCx}>
+          {items}
+        </div>
         <CreateSession />
       </div>
     );
   }
 }
+
+const rootCx = css({
+  marginTop: '1rem'
+});
+const itemsCx = css({
+});
 
 export default SessionList;

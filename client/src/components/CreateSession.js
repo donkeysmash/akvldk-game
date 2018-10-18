@@ -8,6 +8,7 @@ class CreateSession extends Component {
   constructor(props) {
     super(props);
     this.nameRef = React.createRef();
+    this.gameTypeRef = React.createRef();
   }
 
   handleSubmit = async e => {
@@ -15,7 +16,8 @@ class CreateSession extends Component {
     const { userStore, sessionStore } = this.props;
     const hostId = userStore.currentUser._id;
     const inputValue = this.nameRef.current.value;
-    await sessionStore.createSession(inputValue, hostId);
+    const gameType = this.gameTypeRef.current.value;
+    await sessionStore.createSession(inputValue, hostId, gameType);
     this.nameRef.current.value = '';
   }
 
@@ -36,6 +38,9 @@ class CreateSession extends Component {
             type="text"
             placeholder="Name"
           />
+          <select ref={this.gameTypeRef}>
+            <option value="MAFIA">Mafia</option>
+          </select>
           <button className={buttonCx} disabled={sessionStore.isCreating}>Go</button>
         </form>
       </div>
@@ -51,7 +56,6 @@ const welcomeCx = css({
   fontSize: '2rem'
 });
 const inputCx = css({
-  width: '90%',
   display: 'block'
 });
 const buttonCx = css({

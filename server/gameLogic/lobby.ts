@@ -1,6 +1,5 @@
 import { IUserModel, User } from '../models/user';
 import { ISessionModel, Session } from '../models/session';
-import { Game } from './game';
 
 class Lobby {
   sessionId: string;

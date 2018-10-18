@@ -34,12 +34,12 @@ class SessionStore {
     }
   }
 
-  @action async createSession(name, hostId) {
+  @action async createSession(name, hostId, gameType) {
     this.isCreating = true;
     try {
       const response = await axios.request({
         method: 'post',
-        data: { name, hostId },
+        data: { name, hostId, gameType },
         ...axiosConfig
       });
       const resSession = response.data.data.session;

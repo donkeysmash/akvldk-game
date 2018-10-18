@@ -12,7 +12,7 @@ router.post('/', async (req: Request, res: Response) => {
       return res.status(404).json({ message: `User$${hostId} is not found. Valid user required for host` });
     }
     const gameTypeEnum = toGameTypes(gameType);
-    const session = new Session({ name, host, gameTypeEnum });
+    const session = new Session({ name, host, gameType: gameTypeEnum });
     await session.save();
     return res.json({ data: { session }});
   } catch (err) {
