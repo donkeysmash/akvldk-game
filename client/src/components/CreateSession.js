@@ -40,6 +40,7 @@ class CreateSession extends Component {
           />
           <select ref={this.gameTypeRef}>
             <option value="MAFIA">Mafia</option>
+            <option value="RSP">RSP</option>
           </select>
           <button className={buttonCx} disabled={sessionStore.isCreating}>Go</button>
         </form>

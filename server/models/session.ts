@@ -1,10 +1,10 @@
 import { Model, model, Document, Schema } from 'mongoose';
-import { IUser, UserSchema } from './user';
+import { UserSchema, IUserModel } from './user';
 import { GameTypes } from '../gameLogic/game';
 
 export interface ISession {
   name: string;
-  host: IUser;
+  host: IUserModel;
   gameType: GameTypes
 }
 

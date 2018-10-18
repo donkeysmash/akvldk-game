@@ -23,6 +23,13 @@ export function runSocketIO() {
       lobby.removeUser(userId);
       io.of(socket.nsp.name).emit('participants', dpNames);
     });
+
+    socket.on('startGame', userId => {
+      if (lobby.getHostId() === userId) {
+        lobby.lock();
+        lobby.startGame(socket);
+      }
+    });
   });
 }
 

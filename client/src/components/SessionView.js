@@ -17,18 +17,30 @@ class SessionView extends Component {
     gameStore.connect();
   }
 
+  onStartGame = () => {
+    this.props.gameStore.startGame();
+  }
+
   render() {
     const { gameStore, userStore, sessionStore } = this.props;
     if (sessionStore.isLoading) {
       return null;
     }
 
+    if (gameStore.gameState.isStarted) {
+      return <GameRoom />;
+    }
+
     const { currentSession } = sessionStore;
     const { participants } = gameStore;
-    const  ps = participants.map((p, i) => <div key={i}>{p}</div>)
+    const ps = participants.map((p, i) => <div key={i}>{p}</div>)
+    const startGameButton =
+        <div onClick={this.onStartGame} className={startGameCx}>Start game</div>;
     return (
       <div className={rootCx}>
-        <div className={sessionNameCx}>{currentSession.name}</div>
+        <div className={sessionNameCx}>
+          {`[${currentSession.gameType}] - ${currentSession.name}`}
+        </div>
         <div className={hostNameCx}>
             Created by
             <span className={displayNameCx}>{currentSession.host.displayName}</span>
@@ -36,6 +48,7 @@ class SessionView extends Component {
         <div className={participantsCx}>
           {ps}
         </div>
+        {userStore.currentUser._id === currentSession.host._id && startGameButton}
       </div>
     );
   }
@@ -58,6 +71,12 @@ const displayNameCx = css({
 });
 const participantsCx = css({
   color: 'blue'
+});
+const startGameCx = css({
+  padding: '1rem',
+  border: 'green 1px solid',
+  borderRadius: '0.4rem',
+  float: 'right'
 });
 
 export default SessionView;

@@ -7,19 +7,29 @@ import config from '../../config';
 class GameStore {
   @observable participants = [];
   socket;
+  @observable gameState = {};
 
   connect() {
     const sessionId = sessionStore.currentSessionId;
     const uri = `${config.socketUri}/${sessionId}`;
-    const {userId} = userStore
+    const {userId} = userStore;
     this.socket = io.connect(uri, {
       query: { userId }
     });
     this.socket.on('participants', this.setParticipants);
+    this.socket.on('gameState', this.setGameState);
+  }
+
+  @action.bound setGameState(gameState) {
+    this.gameState = gameState;
   }
 
   @action.bound setParticipants(participants) {
     this.participants = participants;
+  }
+
+  startGame() {
+    this.socket.emit('startGame', userStore.userId);
   }
 
   leave() {

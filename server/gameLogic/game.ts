@@ -1,7 +1,9 @@
 import { IUserModel } from '../models/user';
+import { Socket } from 'socket.io';
 
 export interface Game {
   gameType: GameTypes;
+  socket: Socket;
 };
 
 export enum GameTypes {
