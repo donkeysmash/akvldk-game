@@ -11,6 +11,7 @@ class Lobby {
   participants: Map<string, IUserModel>;
   connections: Map<string, Socket>;
   isLocked: boolean;
+  inProgress: boolean;
   nsp: Namespace;
   game: ITurnGame;
 
@@ -20,6 +21,7 @@ class Lobby {
     this.connections = new Map();
     this.nsp = io.of(`/${sessionId}`);
     this.isLocked = false;
+    this.inProgress = false;
   }
 
   async create() {
@@ -27,7 +29,7 @@ class Lobby {
   }
 
   async addUser(userId: string) {
-    if (!this.isLocked && !this.participants.has(userId)) {
+    if (!this.participants.has(userId)) {
       const user = await User.findById(userId);
       this.participants.set(userId, user);
     }
@@ -38,6 +40,7 @@ class Lobby {
   }
 
   startGame(startState: any = {}) {
+    this.inProgress = true;
     // TODO switch based on gameType
     this.game = new Rsp(this.participants);
     this.nsp.on('gameState', gameState => {
@@ -55,6 +58,10 @@ class Lobby {
     this.game.process(startState);
     const newState: GameStateMsg = this.game.emit();
     this.nsp.emit('gameState', newState.gameState);
+  }
+
+  forceSendGameState(userId: string) {
+    this.connections.get(userId).emit('gameState', this.game.gameState);
   }
 
 
