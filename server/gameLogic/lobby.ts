@@ -44,6 +44,7 @@ class Lobby {
     // TODO switch based on gameType
     this.game = new Rsp(this.participants);
     this.connections.forEach((socket, userId) => {
+      console.log('init socket ', userId);
       socket.on('gameState', gameState => {
         console.log('gameState Received:', gameState);
         const newState = this.game.process(gameState, userId);
@@ -60,8 +61,7 @@ class Lobby {
         }
       });
     });
-    this.game.process(startState);
-    const newState: GameStateMsg = this.game.emit();
+    const newState = this.game.process(startState);
     this.nsp.emit('gameState', newState.gameState);
   }
 

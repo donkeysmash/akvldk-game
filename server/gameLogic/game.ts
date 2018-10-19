@@ -5,7 +5,6 @@ export interface ITurnGame {
   gameType: GameTypes;
   gameState: object;
   process(gameState: any, userId?: string): any;
-  emit(): GameStateMsg;
 }
 
 export interface GameStateMsg {
