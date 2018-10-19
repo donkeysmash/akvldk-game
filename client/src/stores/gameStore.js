@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import sessionStore from './sessionStore';
 import userStore from './userStore';
-import { observable, action, reaction } from 'mobx';
+import { observable, action, reaction, toJS } from 'mobx';
 import config from '../../config';
 
 class GameStore {
@@ -9,7 +9,8 @@ class GameStore {
   socket;
   @observable gameState = {};
 
-  connect() {
+  @action.bound connect() {
+    this.gameState = {};
     const sessionId = sessionStore.currentSessionId;
     const uri = `${config.socketUri}/${sessionId}`;
     const {userId} = userStore;
@@ -28,6 +29,12 @@ class GameStore {
     this.participants = participants;
   }
 
+  @action.bound emitGameState() {
+    const forEmitGameState = toJS(this.gameState);
+    console.log('emitting gameState', forEmitGameState);
+    this.socket.emit('gameState', forEmitGameState);
+  }
+
   startGame() {
     this.socket.emit('startGame', userStore.userId);
   }
@@ -41,6 +48,6 @@ class GameStore {
   }
 }
 
+const gameStore = new GameStore();
 
-
-export default new GameStore();
+export default gameStore;

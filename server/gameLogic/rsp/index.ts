@@ -30,6 +30,7 @@ export class Rsp implements ITurnGame {
   public socket: Socket;
   public participants: Map<string, IUserModel>;
   public currentStage: RpsStage;
+  public weapons: Map<string, string>;
 
   constructor(participants: Map<string, IUserModel>) {
     this.gameType = GameTypes.RSP;
@@ -38,11 +39,24 @@ export class Rsp implements ITurnGame {
     this.currentStage = this.stageGenerator.next().value;
   }
 
-  public process(gameState): void {
+  public process(gameState: any, userId: string): GameStateMsg | void {
     if (!gameState.isStarted) {
-      this.gameState = { isStarted: true };
-      return;
+      this.gameState = {
+        isStarted: true,
+        stage: this.currentStage
+      };
+      return {
+        gameState: this.gameState,
+        target: 'all'
+      };
     }
+    if (this.weapons.size === this.participants.size) {
+      // return result
+    }
+
+
+
+
   }
 
   public emit(): GameStateMsg {

@@ -43,17 +43,22 @@ class Lobby {
     this.inProgress = true;
     // TODO switch based on gameType
     this.game = new Rsp(this.participants);
-    this.nsp.on('gameState', gameState => {
-      this.game.process(gameState);
-      const newState: GameStateMsg = this.game.emit();
-      if (newState.target === 'all') {
-        this.nsp.emit('gameState', newState.gameState);
-      } else {
-        const { target, gameState } =  newState;
-        for (let t of target) {
-          this.connections.get(t).emit('gameState', gameState);
+    this.connections.forEach((socket, userId) => {
+      socket.on('gameState', gameState => {
+        console.log('gameState Received:', gameState);
+        const newState = this.game.process(gameState, userId);
+        console.log('processed:', newState);
+        if (newState) {
+          if (newState.target === 'all') {
+            this.nsp.emit('gameState', newState.gameState);
+          } else {
+            const { target, gameState } =  newState;
+            for (let t of target) {
+              this.connections.get(t).emit('gameState', gameState);
+            }
+          }
         }
-      }
+      });
     });
     this.game.process(startState);
     const newState: GameStateMsg = this.game.emit();
@@ -61,6 +66,7 @@ class Lobby {
   }
 
   forceSendGameState(userId: string) {
+    console.log('forceSendGameState', userId, this.game.gameState);
     this.connections.get(userId).emit('gameState', this.game.gameState);
   }
 

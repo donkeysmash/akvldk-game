@@ -24,6 +24,7 @@ export function runSocketIO() {
     }
 
     socket.on('leave', userId => {
+      console.log('user left', userId);
       lobby.removeUser(userId);
       const dpNames = lobby.extractDisplayNames();
       io.of(socket.nsp.name).emit('participants', dpNames);

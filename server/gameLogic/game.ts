@@ -4,7 +4,7 @@ import { Socket } from 'socket.io';
 export interface ITurnGame {
   gameType: GameTypes;
   gameState: object;
-  process(gameState: any): void;
+  process(gameState: any, userId?: string): any;
   emit(): GameStateMsg;
 }
 
