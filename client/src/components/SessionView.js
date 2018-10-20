@@ -22,6 +22,13 @@ class SessionView extends Component {
     this.props.gameStore.startGame();
   }
 
+  componentWillUnmount() {
+    const { gameStore } = this.props;
+    if (!gameStore.gameState.isStarted) {
+      gameStore.leave();
+    }
+  }
+
   render() {
     const { gameStore, userStore, sessionStore } = this.props;
     if (sessionStore.isLoading) {
