@@ -11,6 +11,9 @@ class GameStore {
 
   @action.bound connect() {
     this.gameState = {};
+    if (this.socket && this.socket.connected) {
+      this.leave();
+    }
     const sessionId = sessionStore.currentSessionId;
     const uri = `${config.socketUri}/${sessionId}`;
     const {userId} = userStore;
