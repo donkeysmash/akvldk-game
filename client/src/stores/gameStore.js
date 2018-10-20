@@ -41,6 +41,7 @@ class GameStore {
 
   leave() {
     this.socket.emit('leave', userStore.userId);
+    this.socket.close();
   }
 
   close() {

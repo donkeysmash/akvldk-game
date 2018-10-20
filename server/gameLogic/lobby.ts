@@ -37,32 +37,65 @@ class Lobby {
 
   addConnection(userId: string, socket: Socket) {
     this.connections.set(userId, socket);
+    console.log(`re-establishing the listener for ${userId}`);
+    socket.on('gameState', gameState => {
+      console.log('gameState Received:', gameState);
+      if (!this.inProgress) {
+        console.log('game is not in progress');
+        return;
+      }
+      const newState = this.game.process(gameState, userId);
+      console.log('processed:', newState);
+      if (newState) {
+        if (newState.target === 'all') {
+          this.nsp.emit('gameState', newState.gameState);
+        } else {
+          const { target, gameState } =  newState;
+          for (let t of target) {
+            this.connections.get(t).emit('gameState', gameState);
+          }
+        }
+      }
+    });
+  }
+
+  validateRequirements() {
+    switch (this.session.gameType) {
+      case GameTypes.RSP: {
+        const { min, max } = Rsp.playerRange;
+        const size = this.participants.size;
+        return min <= size && size <= max;
+      }
+      default:
+        return false;
+    }
   }
 
   startGame(startState: any = {}) {
+    const readyToStart = this.validateRequirements();
+    if (!readyToStart) {
+      console.log('readyCheck failed');
+      this.nsp.emit('gameState', { error: 'readyCheck Failed' });
+      return;
+    }
+
     this.inProgress = true;
-    // TODO switch based on gameType
-    this.game = new Rsp(this.participants);
-    this.connections.forEach((socket, userId) => {
-      console.log('init socket ', userId);
-      socket.on('gameState', gameState => {
-        console.log('gameState Received:', gameState);
-        const newState = this.game.process(gameState, userId);
-        console.log('processed:', newState);
-        if (newState) {
-          if (newState.target === 'all') {
-            this.nsp.emit('gameState', newState.gameState);
-          } else {
-            const { target, gameState } =  newState;
-            for (let t of target) {
-              this.connections.get(t).emit('gameState', gameState);
-            }
-          }
-        }
-      });
-    });
+    switch (this.session.gameType) {
+      case GameTypes.RSP:
+        this.game = new Rsp(this.participants, this.gameEnded.bind(this));
+        break;
+      default:
+        this.game = new Rsp(this.participants, this.gameEnded.bind(this));
+    }
+
     const newState = this.game.process(startState);
     this.nsp.emit('gameState', newState.gameState);
+  }
+
+  gameEnded(finishingState: any = {}) {
+    this.inProgress = false;
+    this.nsp.emit('gameState', finishingState);
+    this.game = null;
   }
 
   forceSendGameState(userId: string) {
@@ -84,6 +117,7 @@ class Lobby {
   }
 
   removeUser(userId: string): boolean {
+    this.connections.delete(userId);
     return this.participants.delete(userId);
   }
 

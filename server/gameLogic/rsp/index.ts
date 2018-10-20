@@ -59,6 +59,7 @@ function genResult(participants: Map<string, IUserModel>, weapons: Map<string, s
 
 
 export class Rsp implements ITurnGame {
+  static playerRange = { min: 2, max: 2 };
   gameState: object;
   gameType: GameTypes;
   stageGenerator: Iterator<RpsStage>
@@ -66,14 +67,19 @@ export class Rsp implements ITurnGame {
   public participants: Map<string, IUserModel>;
   public currentStage: RpsStage;
   public weapons: Map<string, string>;
+  public endGame: Function;
 
-  constructor(participants: Map<string, IUserModel>) {
+  constructor(participants, endGame) {
     this.gameType = GameTypes.RSP;
     this.participants = participants;
     this.weapons = new Map();
+    this.endGame = endGame;
   }
 
   public process(gameState: any, userId: string): GameStateMsg | void {
+    if (this.participants.size <= 1) {
+      return this.endGame({});
+    }
     if (!gameState.isStarted) {
       this.weapons = new Map();
       this.gameState = { isStarted: true, stage: RpsStage.SUBMIT };
@@ -92,12 +98,5 @@ export class Rsp implements ITurnGame {
         target: 'all'
       };
     }
-  }
-
-  public emit(): GameStateMsg {
-    return {
-      target: 'all',
-      gameState: this.gameState
-    };
   }
 }
