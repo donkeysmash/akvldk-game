@@ -49,6 +49,11 @@ class SessionView extends Component {
         <div className={participantsCx}>
           {ps}
         </div>
+        {gameStore.gameState.error &&
+          <div className={errorCx}>
+            {gameStore.gameState.error}
+          </div>
+        }
         {userStore.currentUser._id === currentSession.host._id && startGameButton}
       </div>
     );
@@ -79,5 +84,8 @@ const startGameCx = css({
   borderRadius: '0.4rem',
   float: 'right'
 });
+const errorCx = css`
+  color: var(--c-red);
+`
 
 export default SessionView;

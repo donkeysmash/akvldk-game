@@ -116,9 +116,12 @@ class Lobby {
     return this.session.host.id;
   }
 
-  removeUser(userId: string): boolean {
+  removeUser(userId: string) {
     this.connections.delete(userId);
-    return this.participants.delete(userId);
+    this.participants.delete(userId);
+    if (!this.validateRequirements()) {
+      this.gameEnded({ error: 'requirements are not met' });
+    }
   }
 
   extractDisplayNames(): string[] {
