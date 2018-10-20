@@ -37,30 +37,69 @@ class Lobby {
 
   addConnection(userId: string, socket: Socket) {
     this.connections.set(userId, socket);
-  }
-
-  startGame(startState: any = {}) {
-    this.inProgress = true;
-    // TODO switch based on gameType
-    this.game = new Rsp(this.participants);
-    this.nsp.on('gameState', gameState => {
-      this.game.process(gameState);
-      const newState: GameStateMsg = this.game.emit();
-      if (newState.target === 'all') {
-        this.nsp.emit('gameState', newState.gameState);
-      } else {
-        const { target, gameState } =  newState;
-        for (let t of target) {
-          this.connections.get(t).emit('gameState', gameState);
+    console.log(`re-establishing the listener for ${userId}`);
+    socket.on('gameState', gameState => {
+      console.log('gameState Received:', gameState);
+      if (!this.inProgress) {
+        console.log('game is not in progress');
+        return;
+      }
+      const newState = this.game.process(gameState, userId);
+      console.log('processed:', newState);
+      if (newState) {
+        if (newState.target === 'all') {
+          this.nsp.emit('gameState', newState.gameState);
+        } else {
+          const { target, gameState } =  newState;
+          for (let t of target) {
+            this.connections.get(t).emit('gameState', gameState);
+          }
         }
       }
     });
-    this.game.process(startState);
-    const newState: GameStateMsg = this.game.emit();
+  }
+
+  validateRequirements() {
+    switch (this.session.gameType) {
+      case GameTypes.RSP: {
+        const { min, max } = Rsp.playerRange;
+        const size = this.participants.size;
+        return min <= size && size <= max;
+      }
+      default:
+        return false;
+    }
+  }
+
+  startGame(startState: any = {}) {
+    const readyToStart = this.validateRequirements();
+    if (!readyToStart) {
+      console.log('readyCheck failed');
+      this.nsp.emit('gameState', { error: 'readyCheck Failed' });
+      return;
+    }
+
+    this.inProgress = true;
+    switch (this.session.gameType) {
+      case GameTypes.RSP:
+        this.game = new Rsp(this.participants, this.gameEnded.bind(this));
+        break;
+      default:
+        this.game = new Rsp(this.participants, this.gameEnded.bind(this));
+    }
+
+    const newState = this.game.process(startState);
     this.nsp.emit('gameState', newState.gameState);
   }
 
+  gameEnded(finishingState: any = {}) {
+    this.inProgress = false;
+    this.nsp.emit('gameState', finishingState);
+    this.game = null;
+  }
+
   forceSendGameState(userId: string) {
+    console.log('forceSendGameState', userId, this.game.gameState);
     this.connections.get(userId).emit('gameState', this.game.gameState);
   }
 
@@ -77,8 +116,12 @@ class Lobby {
     return this.session.host.id;
   }
 
-  removeUser(userId: string): boolean {
-    return this.participants.delete(userId);
+  removeUser(userId: string) {
+    this.connections.delete(userId);
+    this.participants.delete(userId);
+    if (!this.validateRequirements()) {
+      this.gameEnded({ error: 'requirements are not met' });
+    }
   }
 
   extractDisplayNames(): string[] {

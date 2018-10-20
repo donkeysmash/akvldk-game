@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import CreateSession from './CreateSession';
+import CreateSessionItem from './CreateSessionItem';
 import SessionItem from './SessionItem';
 import { css } from 'emotion';
 import { inject, observer } from 'mobx-react';
@@ -21,9 +21,9 @@ class SessionList extends Component {
     return (
       <div className={rootCx}>
         <div className={itemsCx}>
+          <CreateSessionItem />
           {items}
         </div>
-        <CreateSession />
       </div>
     );
   }

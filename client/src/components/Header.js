@@ -27,7 +27,8 @@ class Header extends Component {
 const rootCx = css({
   marginTop: '1rem',
   backgroundColor: 'pink',
-  textAlign: 'right'
+  textAlign: 'right',
+  padding: '0.2rem 0'
 });
 
 const linkCx = css({

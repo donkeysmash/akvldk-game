@@ -61,6 +61,9 @@ const rootCx = css({
 
 const containerCx = css({
   width: '90vw',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-start'
 });
 
 export default hot(module)(App);

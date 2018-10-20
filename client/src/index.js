@@ -13,11 +13,8 @@ const rootEl = document.getElementById('application');
 
 ReactDOM.render((
   <Provider {...stores}>
-    <div>
-    <DevTools />
     <BrowserRouter>
       <App />
     </BrowserRouter>
-    </div>
   </Provider>
 ), rootEl);

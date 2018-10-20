@@ -24,7 +24,11 @@ export function runSocketIO() {
     }
 
     socket.on('leave', userId => {
+      console.log('user left', userId);
       lobby.removeUser(userId);
+      if (lobby.participants.size === 0) {
+        activeGames.delete(sessionId);
+      }
       const dpNames = lobby.extractDisplayNames();
       io.of(socket.nsp.name).emit('participants', dpNames);
     });
