@@ -51,7 +51,6 @@ class CreateSession extends Component {
 
 const rootCx = css({
   display: 'block',
-  marginTop: '5rem'
 });
 const welcomeCx = css({
   fontSize: '2rem'

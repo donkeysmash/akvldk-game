@@ -16,7 +16,7 @@ class PrivateRoute extends Component {
           state: { from: location }
         }}
       />
-    )
+    );
   }
 }
 
