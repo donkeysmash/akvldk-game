@@ -2,6 +2,22 @@
 
 :root {
   font-size: 12px;
+  --c-navy: #001f3f;
+  --c-blue: #0074D9;
+  --c-aqua: #7FDBFF;
+  --c-teal: #39CCCC;
+  --c-olive: #3D9970;
+  --c-green: #2ECC40;
+  --c-lime: #01FF70;
+  --c-yellow: #FFDC00;
+  --c-orange: #FF851B;
+  --c-red: #FF4136;
+  --c-maroon: #85144b;
+  --c-fuchsia: #F012BE;
+  --c-purple: #B10DC9;
+  --c-black: #111111;
+  --c-gray: #AAAAAA;
+  --c-silver: #DDDDDD;
 }
 
 @media (min-width: 321px) {
@@ -27,9 +43,13 @@
     font-size: 22px;
   }
 }
+input, textarea, select, button {
+  font-family: 'Alegreya', serif;
+}
 
 body {
   font-family: 'Alegreya', serif;
   margin: 0;
   padding: 0;
+  color: var(--c-black);
 }

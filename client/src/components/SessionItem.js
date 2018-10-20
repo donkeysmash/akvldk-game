@@ -19,8 +19,10 @@ const rootCx = css({
   justifyContent: 'space-between',
   marginBottom: '0.3rem',
   padding: '0.2rem',
-  border: 'brown solid 1px',
-  borderRadius: '1rem'
+  border: 'var(--c-blue) solid 1px',
+  borderRadius: '1rem',
+  color: 'var(--c-black)',
+  textDecoration: 'none'
 });
 const nameCx = css({ marginLeft: '0.4rem' });
 const gameTypeCx = css({ marginRight: '0.4rem' });
