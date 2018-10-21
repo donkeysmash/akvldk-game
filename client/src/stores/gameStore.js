@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import sessionStore from './sessionStore';
 import userStore from './userStore';
-import { observable, action, reaction, toJS } from 'mobx';
+import { computed, observable, action, reaction, toJS } from 'mobx';
 import config from '../../config';
 
 class GameStore {
@@ -36,6 +36,21 @@ class GameStore {
     const forEmitGameState = toJS(this.gameState);
     console.log('emitting gameState', forEmitGameState);
     this.socket.emit('gameState', forEmitGameState);
+  }
+
+  @computed get opponentResult() {
+    if (this.gameState.stage !== 'JUDGE') {
+      return {};
+    }
+    const opponentUserId = Object.keys(this.gameState.result).filter(k => k !== userStore.userId)[0];
+    return this.gameState.result[opponentUserId];
+  }
+
+  @computed get playerResult() {
+    if (this.gameState.stage !== 'JUDGE') {
+      return {};
+    }
+    return this.gameState.result[userStore.userId];
   }
 
   startGame() {

@@ -1,13 +1,7 @@
+import * as _ from 'lodash';
 import { ITurnGame, GameTypes, GameStateMsg } from "../game";
 import { IUserModel } from "../../models/user";
 import { Socket } from "socket.io";
-
-
-export enum Weapon {
-  ROCK = 'ROCK',
-  SCISSORS = 'SCISSORS',
-  PAPER = 'PAPER'
-}
 
 export enum RpsStage {
   SUBMIT = 'SUBMIT',
@@ -16,6 +10,18 @@ export enum RpsStage {
 
 function genResult(participants: Map<string, IUserModel>, weapons: Map<string, string>): object {
   const weaponSet = new Set(weapons.values());
+  if (weaponSet.has('unknown') || weaponSet.has(null)) {
+    const result = {};
+    for (let [userId, weapon] of weapons.entries()) {
+      result[userId] = {
+        weapon,
+        displayName: participants.get(userId).displayName,
+        outcome: weapon === 'unknown' || weapon === null ? 'loser' : 'winner'
+      }
+    }
+    return result;
+  }
+
   let winningWeapon;
   if (weaponSet.size === 2) {
     if (['rock', 'paper'].every(v => weaponSet.has(v))) {
@@ -64,16 +70,20 @@ export class Rsp implements ITurnGame {
   gameType: GameTypes;
   stageGenerator: Iterator<RpsStage>
   public socket: Socket;
-  public participants: Map<string, IUserModel>;
+  public participants: Map<string, IUserModel>; // userid, usermodel
   public currentStage: RpsStage;
-  public weapons: Map<string, string>;
+  public weapons: Map<string, string>; //userid, weaponchoice
   public endGame: Function;
+  public timeLeft: number;
+  public timer: NodeJS.Timer;
+  public emit: Function;
 
-  constructor(participants, endGame) {
+  constructor(participants, endGame, forceSend) {
     this.gameType = GameTypes.RSP;
     this.participants = participants;
     this.weapons = new Map();
     this.endGame = endGame;
+    this.emit = forceSend;
   }
 
   public process(gameState: any, userId: string): GameStateMsg | void {
@@ -82,7 +92,17 @@ export class Rsp implements ITurnGame {
     }
     if (!gameState.isStarted) {
       this.weapons = new Map();
-      this.gameState = { isStarted: true, stage: RpsStage.SUBMIT };
+      this.currentStage = RpsStage.SUBMIT;
+      clearInterval(this.timer);
+      this.timer = null;
+      this.timeLeft = 5;
+      this.gameState = {
+        ...gameState,
+        isStarted: true,
+        stage: this.currentStage,
+        timeLeft: this.timeLeft
+      };
+      this.emitTimeLeft();
       return { gameState: this.gameState, target: 'all' };
     }
     this.weapons.set(userId, gameState.weapon);
@@ -93,10 +113,24 @@ export class Rsp implements ITurnGame {
         stage: this.currentStage,
         result: genResult(this.participants, this.weapons)
       };
+      this.gameState = _.omit(this.gameState, 'timer');
       return {
         gameState: this.gameState,
         target: 'all'
       };
     }
+  }
+
+  public emitTimeLeft(interval = 1000) {
+    this.timer = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft = this.timeLeft - 1;
+        this.gameState = {
+          ...this.gameState,
+          timeLeft: this.timeLeft
+        }
+        this.emit();
+      }
+    }, interval);
   }
 }

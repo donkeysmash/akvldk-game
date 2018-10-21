@@ -82,10 +82,10 @@ class Lobby {
     this.inProgress = true;
     switch (this.session.gameType) {
       case GameTypes.RSP:
-        this.game = new Rsp(this.participants, this.gameEnded.bind(this));
+        this.game = new Rsp(this.participants, this.gameEnded.bind(this), this.forceSendGameState.bind(this));
         break;
       default:
-        this.game = new Rsp(this.participants, this.gameEnded.bind(this));
+        this.game = new Rsp(this.participants, this.gameEnded.bind(this), this.forceSendGameState.bind(this));
     }
 
     const newState = this.game.process(startState);
@@ -98,9 +98,14 @@ class Lobby {
     this.game = null;
   }
 
-  forceSendGameState(userId: string) {
-    console.log('forceSendGameState', userId, this.game.gameState);
-    this.connections.get(userId).emit('gameState', this.game.gameState);
+  forceSendGameState(userId?: string) {
+    if (!userId) {
+      console.log('forcesending broadcast', this.game.gameState);
+      this.nsp.emit('gameState', this.game.gameState);
+    } else {
+      console.log('forceSendGameState', userId, this.game.gameState);
+      this.connections.get(userId).emit('gameState', this.game.gameState);
+    }
   }
 
 
