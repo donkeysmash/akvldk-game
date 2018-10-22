@@ -8,62 +8,6 @@ export enum RpsStage {
   JUDGE = 'JUDGE'
 }
 
-function genResult(participants: Map<string, IUserModel>, weapons: Map<string, string>): object {
-  const weaponSet = new Set(weapons.values());
-  if (weaponSet.has('unknown') || weaponSet.has(null)) {
-    const result = {};
-    for (let [userId, weapon] of weapons.entries()) {
-      result[userId] = {
-        weapon,
-        displayName: participants.get(userId).displayName,
-        outcome: weapon === 'unknown' || weapon === null ? 'loser' : 'winner'
-      }
-    }
-    return result;
-  }
-
-  let winningWeapon;
-  if (weaponSet.size === 2) {
-    if (['rock', 'paper'].every(v => weaponSet.has(v))) {
-      winningWeapon = 'paper';
-    } else if (['rock', 'scissors'].every(v => weaponSet.has(v))) {
-      winningWeapon = 'rock';
-    } else {
-      winningWeapon = 'scissors';
-    }
-  } else {
-    winningWeapon = 'draw';
-  }
-
-  const winnerList = [];
-  for (let [userId, weapon] of weapons.entries()) {
-    if (weapon === winningWeapon) {
-      winnerList.push(userId);
-    }
-  }
-  const computeOutcome = (userId) => {
-    if (winningWeapon === 'draw') {
-      return 'draw';
-    }
-    if (winnerList.indexOf(userId) > -1) {
-      return 'winner';
-    }
-    return 'loser';
-  }
-
-  const result = {};
-  for (let [userId, user] of participants.entries()) {
-    result[userId] = {
-      weapon: weapons.get(userId),
-      displayName: user.displayName,
-      outcome: computeOutcome(userId)
-    };
-  }
-  console.log(result);
-  return result;
-}
-
-
 export class Rsp implements ITurnGame {
   static playerRange = { min: 2, max: 2 };
   gameState: object;
@@ -111,7 +55,7 @@ export class Rsp implements ITurnGame {
       this.gameState = {
         ...this.gameState,
         stage: this.currentStage,
-        result: genResult(this.participants, this.weapons)
+        result: this.genResult()
       };
       this.gameState = _.omit(this.gameState, 'timer');
       return {
@@ -132,5 +76,60 @@ export class Rsp implements ITurnGame {
         this.emit();
       }
     }, interval);
+  }
+
+  genResult(): object {
+    const weaponSet = new Set(this.weapons.values());
+    if (weaponSet.has('unknown') || weaponSet.has(null)) {
+      const result = {};
+      for (let [userId, weapon] of this.weapons.entries()) {
+        result[userId] = {
+          weapon,
+          displayName: this.participants.get(userId).displayName,
+          outcome: weapon === 'unknown' || weapon === null ? 'loser' : 'winner'
+        }
+      }
+      return result;
+    }
+
+    let winningWeapon;
+    if (weaponSet.size === 2) {
+      if (['rock', 'paper'].every(v => weaponSet.has(v))) {
+        winningWeapon = 'paper';
+      } else if (['rock', 'scissors'].every(v => weaponSet.has(v))) {
+        winningWeapon = 'rock';
+      } else {
+        winningWeapon = 'scissors';
+      }
+    } else {
+      winningWeapon = 'draw';
+    }
+
+    const winnerList = [];
+    for (let [userId, weapon] of this.weapons.entries()) {
+      if (weapon === winningWeapon) {
+        winnerList.push(userId);
+      }
+    }
+    const computeOutcome = (userId) => {
+      if (winningWeapon === 'draw') {
+        return 'draw';
+      }
+      if (winnerList.indexOf(userId) > -1) {
+        return 'winner';
+      }
+      return 'loser';
+    }
+
+    const result = {};
+    for (let [userId, user] of this.participants.entries()) {
+      result[userId] = {
+        weapon: this.weapons.get(userId),
+        displayName: user.displayName,
+        outcome: computeOutcome(userId)
+      };
+    }
+    console.log(result);
+    return result;
   }
 }
