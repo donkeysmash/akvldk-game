@@ -27,7 +27,7 @@ class UserStore {
   }
 
   @computed get userId() {
-    return this.currentUser._id;
+    return this.currentUser._id || '';
   }
 
   @action forgetUser() {

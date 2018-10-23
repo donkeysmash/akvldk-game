@@ -7,15 +7,12 @@ import { inject, observer } from 'mobx-react';
 @observer
 class Opponent extends Component {
   render() {
-    const { gameStore, userStore } = this.props;
-    const { displayName } = userStore;
+    const { displayName } = this.props.userStore;
     const opponentDpName = this.props.gameStore.participants.filter(v => v !== displayName)[0] || '';
-    const result = gameStore.opponentResult;
     return (
       <div className={rootCx}>
-        {result.outcome && <div>{result.outcome}</div>}
         <div className={weaponContainerCx}>
-          <Weapons onSelect={() => {}} selected={result.weapon} />
+          <Weapons onSelect={() => {}} />
         </div>
         <div className={dpNameCx}>{opponentDpName}</div>
       </div>

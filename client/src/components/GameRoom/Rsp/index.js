@@ -3,12 +3,24 @@ import { css } from 'emotion';
 import MiddleGround from './MiddleGround';
 import Opponent from './Opponent';
 import MyChoice from './MyChoice';
+import OpponentResult from './OpponentResult';
+import MyResult from './MyResult';
 import { inject, observer } from 'mobx-react';
 
 @inject('gameStore')
 @observer
 class Rsp extends Component {
   render() {
+    const { stage } = this.props.gameStore.gameState;
+    if (stage === 'JUDGE') {
+      return (
+        <div className={rootCx}>
+          <OpponentResult />
+          <MiddleGround />
+          <MyResult />
+        </div>
+      );
+    }
     return (
       <div className={rootCx}>
         <Opponent />

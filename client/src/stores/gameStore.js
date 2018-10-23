@@ -3,6 +3,8 @@ import sessionStore from './sessionStore';
 import userStore from './userStore';
 import { computed, observable, action, reaction, toJS } from 'mobx';
 import config from '../../config';
+import _reduce from 'lodash/reduce';
+import _map from 'lodash/map'
 
 class GameStore {
   @observable participants = [];
@@ -26,6 +28,20 @@ class GameStore {
 
   @action.bound setGameState(gameState) {
     this.gameState = gameState;
+  }
+
+  @computed get matchHistoryFormatted() {
+    const result = _reduce(this.gameState.history, (acc, v) => {
+      _map(v, (value, key) => {
+        if (!acc[key]) {
+          acc[key] = [value];
+        } else {
+          acc[key].push(value);
+        }
+      });
+      return acc;
+    }, {});
+    return result;
   }
 
   @action.bound setParticipants(participants) {
@@ -58,8 +74,10 @@ class GameStore {
   }
 
   leave() {
-    this.socket.emit('leave', userStore.userId);
-    this.socket.close();
+    if (userStore.currentUser && this.socket.connected) {
+      this.socket.emit('leave', userStore.userId);
+      this.socket.close();
+    }
   }
 
   close() {

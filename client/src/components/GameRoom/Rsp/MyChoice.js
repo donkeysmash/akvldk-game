@@ -12,13 +12,10 @@ class MyChoice extends Component {
   }
 
   render() {
-    const { gameStore, userStore } = this.props;
     const { displayName } = this.props.userStore;
     const selected = this.props.rspStore.weapon;
-    const result = gameStore.playerResult;
     return (
       <div className={rootCx}>
-        {result.outcome && <div>{result.outcome}</div>}
         <div className={dpNameCx}>{displayName}</div>
         <Weapons onSelect={this.onSelectHandler} selected={selected} />
       </div>

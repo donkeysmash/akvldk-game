@@ -21,6 +21,7 @@ export class Rsp implements ITurnGame {
   public timeLeft: number;
   public timer: NodeJS.Timer;
   public emit: Function;
+  public history: Array<object>;
 
   constructor(participants, endGame, forceSend) {
     this.gameType = GameTypes.RSP;
@@ -28,6 +29,7 @@ export class Rsp implements ITurnGame {
     this.weapons = new Map();
     this.endGame = endGame;
     this.emit = forceSend;
+    this.history = [];
   }
 
   public process(gameState: any, userId: string): GameStateMsg | void {
@@ -52,12 +54,14 @@ export class Rsp implements ITurnGame {
     this.weapons.set(userId, gameState.weapon);
     if (this.weapons.size === this.participants.size) {
       this.currentStage = RpsStage.JUDGE
+      const result  = this.genResult();
+      this.history.push(result);
       this.gameState = {
         ...this.gameState,
         stage: this.currentStage,
-        result: this.genResult()
+        history: this.history,
+        result,
       };
-      this.gameState = _.omit(this.gameState, 'timer');
       return {
         gameState: this.gameState,
         target: 'all'
@@ -86,7 +90,12 @@ export class Rsp implements ITurnGame {
         result[userId] = {
           weapon,
           displayName: this.participants.get(userId).displayName,
-          outcome: weapon === 'unknown' || weapon === null ? 'loser' : 'winner'
+          outcome:
+            weapon === 'unknown' ||
+            weapon === null ||
+            weapon === undefined
+              ? 'loser'
+              : 'winner'
         }
       }
       return result;
