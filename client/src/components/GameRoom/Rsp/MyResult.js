@@ -16,7 +16,9 @@ class MyResult extends Component {
     const outcomeMsg = <div>{outcome}!</div>
     return (
       <div className={rootCx}>
-        {outcomeMsg}
+        <div className={outcomeCx}>
+          {outcomeMsg}
+        </div>
         <div className={countCx}>
           {aggregated.winner}-{aggregated.draw}-{aggregated.loser}
         </div>
@@ -38,5 +40,9 @@ const countCx = css({
 const historyCx = css({
   fontSize: '1.3rem'
 });
+const outcomeCx = css({
+  fontWeight: 'bold',
+  fontSize: '1.8rem'
+})
 
 export default MyResult;

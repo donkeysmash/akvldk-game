@@ -25,7 +25,8 @@ const rootCx = css({
 });
 
 const weaponContainerCx = css({
-
+  filter: 'blur(7px)',
+  position: 'relative'
 });
 
 const dpNameCx = css({

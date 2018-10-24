@@ -16,39 +16,25 @@ class MiddleGround extends Component {
   };
 
   render() {
+    const { stage } = this.props.gameStore.gameState;
+    if (stage === 'JUDGE') {
+      const btnCx = css`
+        padding: 0.5rem;
+      `;
+      return (
+        <button className={btnCx} onClick={this.onReset}>
+          reset
+        </button>
+      );
+    }
     const { seconds } = this.props.rspStore;
     const rootCx = css`
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      & > div {
-        width: 20vw;
-      }
-    `;
-    const vsCx = css`
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
+      font-size: 3rem;
       text-align: center;
     `;
-    const countDownCx = css`
-      font-size: 2rem;
-    `;
-    const hideReset = seconds === 0 ? 'block': 'hidden';
-    const resetCx = css({
-      border: '1px var(--c-black) solid',
-      borderRadius: '0.3rem',
-      visibility: hideReset
-    });
-
     return (
       <div className={rootCx}>
-        <div className={countDownCx}>{seconds}</div>
-        <div className={vsCx}>
-          vs
-        </div>
-        <div className={resetCx} onClick={this.onReset}>
-          reset
-        </div>
+        {seconds}
       </div>
     );
   }
