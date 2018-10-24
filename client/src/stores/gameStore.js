@@ -74,7 +74,7 @@ class GameStore {
   }
 
   leave() {
-    if (userStore.currentUser && this.socket.connected) {
+    if (userStore.currentUser && this.socket && this.socket.connected) {
       this.socket.emit('leave', userStore.userId);
       this.socket.close();
     }
