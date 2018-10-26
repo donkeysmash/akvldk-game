@@ -5,12 +5,12 @@ import Weapons from './Weapons';
 import { inject, observer } from 'mobx-react';
 import _pick from 'lodash/pick';
 
-@inject('gameStore', 'userStore')
+@inject('gameStore', 'userStore', 'rspStore')
 @observer
 class MyResult extends Component {
   render() {
-    const { gameStore, userStore } = this.props;
-    const outcomeHistory = _pick(gameStore.matchHistoryFormatted, userStore.userId);
+    const { gameStore, userStore, rspStore } = this.props;
+    const outcomeHistory = _pick(rspStore.matchHistoryFormatted, userStore.userId);
     const aggregated = aggregateRounds(outcomeHistory[userStore.userId]);
     const { outcome, weapon }  = gameStore.gameState.result[userStore.userId];
     const outcomeMsg = <div>{outcome}!</div>

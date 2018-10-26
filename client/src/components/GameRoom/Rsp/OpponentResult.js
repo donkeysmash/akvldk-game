@@ -3,13 +3,14 @@ import { css } from 'emotion';
 import { inject, observer } from 'mobx-react';
 import _omit from 'lodash/omit'
 import Weapons from './Weapons';
+import rspStore from '../../../stores/rspStore';
 
-@inject('gameStore', 'userStore')
+@inject('gameStore', 'userStore', 'rspStore')
 @observer
 class OpponentResult extends Component {
   render() {
     const { gameStore, userStore } = this.props;
-    const opponentHistory = _omit(gameStore.matchHistoryFormatted, userStore.userId);
+    const opponentHistory = _omit(rspStore.matchHistoryFormatted, userStore.userId);
     const opponentId = Object.keys(opponentHistory)[0];
     const extracted = opponentHistory[opponentId];
     const aggregated = aggregateRounds(extracted);

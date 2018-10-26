@@ -29,8 +29,9 @@ class CreateSessionItem extends Component {
       return null;
     }
     const gameOptions = [
-      { value: 'MAFIA', label: 'Mafia' },
-      { value: 'RSP', label: 'RSP' }
+      // { value: 'MAFIA', label: 'Mafia' },
+      { value: 'RSP', label: 'RSP' },
+      { value: 'PLANNING_POKER', label: 'Planning Poker' }
     ];
     const selectStyles = {
       container: (base, state) => ({ ...base, width: '10rem' })

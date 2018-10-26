@@ -30,20 +30,6 @@ class GameStore {
     this.gameState = gameState;
   }
 
-  @computed get matchHistoryFormatted() {
-    const result = _reduce(this.gameState.history, (acc, v) => {
-      _map(v, (value, key) => {
-        if (!acc[key]) {
-          acc[key] = [value];
-        } else {
-          acc[key].push(value);
-        }
-      });
-      return acc;
-    }, {});
-    return result;
-  }
-
   @action.bound setParticipants(participants) {
     this.participants = participants;
   }
@@ -52,21 +38,6 @@ class GameStore {
     const forEmitGameState = toJS(this.gameState);
     console.log('emitting gameState', forEmitGameState);
     this.socket.emit('gameState', forEmitGameState);
-  }
-
-  @computed get opponentResult() {
-    if (this.gameState.stage !== 'JUDGE') {
-      return {};
-    }
-    const opponentUserId = Object.keys(this.gameState.result).filter(k => k !== userStore.userId)[0];
-    return this.gameState.result[opponentUserId];
-  }
-
-  @computed get playerResult() {
-    if (this.gameState.stage !== 'JUDGE') {
-      return {};
-    }
-    return this.gameState.result[userStore.userId];
   }
 
   startGame() {
