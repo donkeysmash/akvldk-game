@@ -23,10 +23,11 @@ export function runSocketIO() {
       lobby.forceSendGameState(userId);
     }
 
-    socket.on('leave', userId => {
+    socket.on('leave', async userId => {
       console.log('user left', userId);
       lobby.removeUser(userId);
       if (lobby.participants.size === 0) {
+        await Session.findByIdAndDelete(sessionId);
         activeGames.delete(sessionId);
       }
       const dpNames = lobby.extractDisplayNames();
