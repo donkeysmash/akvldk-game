@@ -5,6 +5,7 @@ import { computed, observable, action, reaction, toJS } from 'mobx';
 import config from '../../config';
 import _reduce from 'lodash/reduce';
 import _map from 'lodash/map'
+import _isEmpty from 'lodash/isEmpty';
 
 class GameStore {
   @observable participants = [];
@@ -40,12 +41,17 @@ class GameStore {
     this.socket.emit('gameState', forEmitGameState);
   }
 
+  @computed get isStarted() {
+    return !_isEmpty(this.gameState);
+  }
+
   startGame() {
     this.socket.emit('startGame', userStore.userId);
   }
 
   leave() {
     if (userStore.currentUser && this.socket && this.socket.connected) {
+      this.gameState = {};
       this.socket.emit('leave', userStore.userId);
       this.socket.close();
     }

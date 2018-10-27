@@ -57,7 +57,7 @@ reaction(
   (seconds) => {
     if (!rspStore.isCountingDown && seconds > 0) {
       rspStore.setCountingDown();
-    } else if (rpsStore.isCountingDown && seconds === 0) {
+    } else if (rspStore.isCountingDown && seconds === 0) {
       const currentState = gameStore.gameState;
       gameStore.setGameState({
         ...currentState,
