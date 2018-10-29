@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import Cards from './Cards';
 
 class PlanningPoker extends Component {
   render() {
     return (
       <div>
-        planning poker
+        <Cards />
       </div>
     );
   }
