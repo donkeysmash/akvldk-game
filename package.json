@@ -8,7 +8,6 @@
   "scripts": {
     "__debug": "NODE_ENV=development nodemon --watch ./dist_server --inspect=0.0.0.0:9222 --nolazy ./dist_server/index.js",
     "debug:server": "docker-compose up --build",
-    "start": "docker-compose -f docker-compose.prod.yml up",
     "build:server": "tsc",
     "watch:server": "tsc -w",
     "test:server": "mocha -r ts-node/register server/**/*.test.ts",
