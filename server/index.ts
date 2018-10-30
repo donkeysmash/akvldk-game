@@ -26,6 +26,7 @@ app.use('/api', Routes);
 app.use(express.static(path.resolve(process.cwd(), 'dist_client')));
 
 app.use('*', (req, res) => {
+  console.log('unknown uri -- fallback');
   res.sendFile(path.resolve(process.cwd(), 'public', 'index.html'));
 });
 
