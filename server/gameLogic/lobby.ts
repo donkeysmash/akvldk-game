@@ -1,7 +1,7 @@
 import { IUserModel, User } from '../models/user';
 import { ISessionModel, Session } from '../models/session';
 import { GameTypes, ITurnGame, GameStateMsg } from './game';
-import { Rsp } from "./Rsp";
+import { Rsp } from './rsp';
 import { io } from '../';
 import { Socket, Namespace } from 'socket.io';
 import { PlanningPoker } from './planningPoker';

@@ -1,2 +1,6 @@
 node_modules/
-client/
+coverage/
+dist_client/
+dist_server/
+.vscode/
+.nyc_output
