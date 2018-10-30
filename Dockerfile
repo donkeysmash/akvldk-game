@@ -6,7 +6,7 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY dist_server/ dist_server/
+RUN npm build
 
 EXPOSE 3000
 
