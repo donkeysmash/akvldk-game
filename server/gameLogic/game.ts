@@ -16,12 +16,15 @@ export enum GameTypes {
   MAFIA = 'MAFIA',
   AVALON = 'AVALON',
   RSP = 'RSP',
+  PLANNING_POKER = 'PLANNING_POKER',
   INVALID = 'INVALID'
 }
 
 export function toGameTypes(gameType: string): GameTypes {
   const type = gameType.toUpperCase();
   switch (type) {
+    case GameTypes.PLANNING_POKER:
+      return GameTypes.PLANNING_POKER;
     case GameTypes.MAFIA:
       return GameTypes.MAFIA;
     case GameTypes.AVALON:

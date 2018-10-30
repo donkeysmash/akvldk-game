@@ -1,8 +1,11 @@
 import io from 'socket.io-client';
 import sessionStore from './sessionStore';
 import userStore from './userStore';
-import { observable, action, reaction, toJS } from 'mobx';
+import { computed, observable, action, reaction, toJS } from 'mobx';
 import config from '../../config';
+import _reduce from 'lodash/reduce';
+import _map from 'lodash/map'
+import _isEmpty from 'lodash/isEmpty';
 
 class GameStore {
   @observable participants = [];
@@ -11,6 +14,9 @@ class GameStore {
 
   @action.bound connect() {
     this.gameState = {};
+    if (this.socket && this.socket.connected) {
+      this.leave();
+    }
     const sessionId = sessionStore.currentSessionId;
     const uri = `${config.socketUri}/${sessionId}`;
     const {userId} = userStore;
@@ -35,13 +41,20 @@ class GameStore {
     this.socket.emit('gameState', forEmitGameState);
   }
 
+  @computed get isStarted() {
+    return !_isEmpty(this.gameState);
+  }
+
   startGame() {
     this.socket.emit('startGame', userStore.userId);
   }
 
   leave() {
-    this.socket.emit('leave', userStore.userId);
-    this.socket.close();
+    if (userStore.currentUser && this.socket && this.socket.connected) {
+      this.gameState = {};
+      this.socket.emit('leave', userStore.userId);
+      this.socket.close();
+    }
   }
 
   close() {

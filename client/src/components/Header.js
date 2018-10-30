@@ -3,16 +3,23 @@ import { css } from 'emotion';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 
-@inject('userStore')
+@inject('userStore', 'gameStore')
 @observer
 class Header extends Component {
+  onClickLeave = () => {
+    this.props.gameStore.leave();
+  }
+
   render() {
-    const { userStore } = this.props;
+    const { userStore, gameStore } = this.props;
     if (userStore.currentUser) {
       return (
         <div className={rootCx}>
+          {gameStore.isStarted &&
+            <Link onClick={this.onClickLeave} className={linkCx} to="/">Leave game</Link>
+          }
           <span>{userStore.displayName}</span>
-          <Link className={linkCx} to="/logout">logout</Link>
+          <Link className={linkCx} to="/logout">Logout</Link>
         </div>
       );
     }
