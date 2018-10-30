@@ -14,7 +14,11 @@ app.use(morgan('dev'));
 const port: number = Number(process.env.PORT) || 3000;
 const isDevelopment = process.env.NODE_ENV === 'development';
 
-mongoose.connect('mongodb://mongo', { useNewUrlParser: true })
+if (isDevelopment) {
+  mongoose.connect('mongodb://mongo', { useNewUrlParser: true });
+} else {
+  mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
+}
 
 app.use(bodyParser.json());
 app.use('/dev', DevController);
