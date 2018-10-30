@@ -1,6 +1,5 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -10,19 +9,17 @@ module.exports = {
   ],
   output: {
     path: path.resolve(__dirname, '../dist_client'),
-    filename: 'client.bundle.js'
+    filename: 'zmff.bundle.js'
   },
   optimization: {
     minimize: true,
     nodeEnv: 'production'
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'index.html')
-    }),
-    new ScriptExtHtmlWebpackPlugin({
-      defaultAttribute: 'defer'
-    })
+    new CopyPlugin([{
+      from: path.resolve(__dirname, 'public'),
+      to: path.resolve(__dirname, '../dist_client')
+    }])
   ],
   module: {
     rules: [

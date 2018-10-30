@@ -16,6 +16,5 @@ services:
     volumes:
       - ./dist_server:/app/dist_server
       - ./dist_client:/app/dist_client
-      - ./client/public:/app/public
     environment:
       - PORT:3000

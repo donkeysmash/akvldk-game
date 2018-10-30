@@ -25,9 +25,10 @@ app.use('/dev', DevController);
 app.use('/api', Routes);
 app.use(express.static(path.resolve(process.cwd(), 'dist_client')));
 
+// TODO what is the proper uri in case of development
 app.use('*', (req, res) => {
-  console.log('unknown uri -- fallback');
-  res.sendFile(path.resolve(process.cwd(), 'public', 'index.html'));
+  console.log('fallback uri');
+  res.sendFile(path.resolve(process.cwd(), 'client', 'index.html'));
 });
 
 const server = new http.Server(app);
